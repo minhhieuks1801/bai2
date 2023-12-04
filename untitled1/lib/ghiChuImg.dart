@@ -34,9 +34,10 @@ class _ghiChu2 extends State<ghiChuImg> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Chụp hình')),
       backgroundColor: Colors.greenAccent,
       body: Container(
-        margin: const EdgeInsets.only(top: 50),
+        margin: const EdgeInsets.only(top: 10),
         child: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Row(

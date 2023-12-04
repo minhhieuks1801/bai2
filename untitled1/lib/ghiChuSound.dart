@@ -1,12 +1,18 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+//import 'package:flutter_sound/flutter_sound.dart';
 import 'package:record/record.dart';
 import 'package:path/path.dart';
+import 'package:audioplayers/audioplayers.dart' show PlayerState;
+
+
+
 
 import 'model/Img.dart';
 
@@ -16,21 +22,40 @@ class ghiChuSound extends StatefulWidget{
   _ghiChuSound1 createState() => _ghiChuSound1();
 }
 
-class _ghiChuSound1 extends State<ghiChuSound> {
+class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
   int? a = 0, b = 0;
   late Record audioRecord;
   late AudioPlayer audioPlayer;
   bool isRecording = false;
   String? audioPath = '';
   List<Img> listItem = [];
+  bool isPlaying = false;
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
 
   @override
   void initState() {
-    super.initState();
     _hienThiFile();
     audioRecord = Record();
     audioPlayer = AudioPlayer();
+    audioPlayer.onPlayerStateChanged.listen((state) {
+      setState(() {
+        isPlaying = state == PlayerState.playing;
+      });
+    });
+    audioPlayer.onDurationChanged.listen((newDuration) {
+      setState(() {
+        duration = newDuration;
+      });
+    });
+    audioPlayer.onPositionChanged.listen((newPosition) {
+      setState(() {
+        position = newPosition;
+      });
+    });
+    super.initState();
   }
+
   @override
   void dispose() {
     audioRecord.dispose();
@@ -47,7 +72,6 @@ class _ghiChuSound1 extends State<ghiChuSound> {
       isRecording = true;
     });
   }
-
   Future<void> stopRecording() async {
     //Kết nối máy thật hoặc máy ảo bên ngoài để lấy mic :v
     String? path = await audioRecord.stop();
@@ -57,18 +81,17 @@ class _ghiChuSound1 extends State<ghiChuSound> {
       isRecording = false;
     });
   }
-
-  Future<void> playRecording(int index, bool a) async {
+  Future<void> playRecording(int index) async {
     Reference ref = FirebaseStorage.instance.ref().child(listItem[index].name.toString());
     String url = await ref.getDownloadURL();
     Source path = UrlSource(url);
-    a?
-      await audioPlayer.play(path): audioPlayer.stop();
+    await audioPlayer.play(path);
     setState(() {});
   }
-
-
-
+  Future<void> pauseRecording() async {
+    audioPlayer.pause();
+    setState(() {});
+  }
   Future<void> uploadFile() async {
     File file = File(audioPath!);
     //String fileName = file.path.split('/').last;
@@ -88,7 +111,6 @@ class _ghiChuSound1 extends State<ghiChuSound> {
       print('Error uploading file: $e');
     }
   }
-
   Future<void> _hienThiFile() async {
     try {
       Query refAnh = FirebaseDatabase.instance.ref('Img').orderByChild('name')/*reference().child('img')*/;
@@ -109,7 +131,6 @@ class _ghiChuSound1 extends State<ghiChuSound> {
       print(e);
     }
   }
-
   Future<void> layFileFireBase(String tenAnh) async{
     Reference ref = FirebaseStorage.instance.ref().child(tenAnh);
     String url = await ref.getDownloadURL();
@@ -121,7 +142,6 @@ class _ghiChuSound1 extends State<ghiChuSound> {
       }
     });
   }
-
   Future<void> _xoaAnh(int index) async {
     DatabaseReference deleteFB = FirebaseDatabase.instance.reference().child('Img/${listItem[index].key}');
     deleteFB.remove();
@@ -135,7 +155,6 @@ class _ghiChuSound1 extends State<ghiChuSound> {
       });
     });
   }
-
   _xoaImgDialog(BuildContext context, int index) async {
     return showDialog(
         context: context,
@@ -164,56 +183,57 @@ class _ghiChuSound1 extends State<ghiChuSound> {
           );
         });
   }
-  _ngheDialog(BuildContext context, int a) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Scrollbar(
-              child: Row(
-                children: [
-                  Text(listItem[a].name.toString())
-                ],
-              )
-            ),
-            actions: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    child: const Text('Nghe'),
-                    onPressed: () {
-                      playRecording(a, true);
-                    },
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  ElevatedButton(
-                    child: const Text('Thoát'),
-                    onPressed: () {
-                      playRecording(a, false);
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-
-            ],
-          );
-        });
+  String formatTime(Duration duration){
+    String twoDigits (int n) => n.toString().padLeft(2, '0');
+    String H = twoDigits(duration.inHours);
+    String M = twoDigits(duration.inMinutes.remainder(60));
+    String S = twoDigits(duration.inSeconds.remainder(60));
+    return [if(duration.inHours > 0 )
+      H, M, S].join(':');
+    
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white60,
+      appBar: AppBar(title: Text('Ghi âm')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             const SizedBox(
-              height: 10,
+              height: 30,
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 15, top: 0, right: 15, bottom: 0),
+              child: Slider(
+                min: 0,
+                max: duration.inSeconds.toDouble(),
+                value: position.inSeconds.toDouble(),
+                onChanged: (value) async {
+                  final position = Duration(seconds: value.toInt());
+                  await audioPlayer.seek(position);
+                  await audioPlayer.resume();
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 20, top: 0, right: 20, bottom: 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(formatTime(duration),
+                    style: const TextStyle(fontSize: 25, color: Colors.red)),
+                  Text(formatTime(position),
+                      style: const TextStyle(fontSize: 25, color: Colors.red)),
+                ],
+              ),
+            ),
+            ElevatedButton(
+              onPressed: (){
+                  isPlaying? audioPlayer.pause() : audioPlayer.resume();
+              }, child: isPlaying? const Text('Dừng') : const Text('Nghe tiếp'),
             ),
             ElevatedButton(
                 onPressed: !isRecording ? startRecording: stopRecording,
@@ -249,7 +269,8 @@ class _ghiChuSound1 extends State<ghiChuSound> {
                               ),
                               ElevatedButton(
                                   onPressed: (){
-                                    _ngheDialog(context, index);
+                                    playRecording(index);
+                                    isPlaying = true;
                                   },
                                   child: const Text('Nghe')
                               ),
