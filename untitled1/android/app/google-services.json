@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "445507660807",
+    "project_id": "ghichu-90657",
+    "storage_bucket": "ghichu-90657.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:445507660807:android:0c1add7daf1b356d6c4ea2",
+        "android_client_info": {
+          "package_name": "com.example.untitled1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAE3wv05Qolk5Tc_qrCWgaCcRbjND15F3Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
