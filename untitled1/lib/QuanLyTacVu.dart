@@ -12,8 +12,8 @@ class QuanLyTacVu extends StatefulWidget{
 class _QuanLyTacVu1 extends State<QuanLyTacVu> {
   final TextEditingController _txtTenTask = TextEditingController();
   final TextEditingController _txtNoiDungTask = TextEditingController();
-  List<TacVu> listTacVu = [TacVu('001', 'Tác vụ 1', 'Hoàn thành app tác vũ', false)];
-  bool? light;
+  List<TacVu> listTacVu = [TacVu('001', 'Tác vụ 1', 'Hoàn thành app tác vũ', false),
+                           TacVu('001', 'Tác vụ 2', 'Hoàn thành app tác vụ', true),];
 
   _xoaImgDialog(BuildContext context) async {
     return showDialog(
@@ -112,7 +112,6 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                   padding: const EdgeInsets.all(8),
                   itemCount: listTacVu.length,
                   itemBuilder: (BuildContext context, int index){
-                    light = listTacVu[index].tinhTrang;
                     return Container(
                       color: const Color(0xffF4E869),
                       height: 100,
@@ -134,7 +133,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                             thumbColor: const MaterialStatePropertyAll<Color>(Colors.black),
                             onChanged: (bool value) {
                               setState(() {
-                                light = value;
+                                  listTacVu[index].tinhTrang = value? true: false;
                               });
                             },
                           ),
