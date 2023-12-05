@@ -14,7 +14,7 @@ import 'package:audioplayers/audioplayers.dart' show PlayerState;
 
 
 
-import 'model/Img.dart';
+import 'model/Sound.dart';
 
 class ghiChuSound extends StatefulWidget{
   const ghiChuSound({super.key});
@@ -28,7 +28,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
   late AudioPlayer audioPlayer;
   bool isRecording = false;
   String? audioPath = '';
-  List<Img> listItem = [];
+  List<Sound> listItem = [];
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
@@ -99,9 +99,9 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
     String name = DateTime.now().toString().split('.')[0];
     try {
       Reference storageReference = FirebaseStorage.instance.ref().child('$name.M4A');
-      Img i = Img(name, '$name.M4A', 2, '');
+      Sound i = Sound(name, '$name.M4A', '');
       DatabaseReference postListRef = FirebaseDatabase.instance.reference();
-      postListRef.child('Img').push().set(i.toJson());
+      postListRef.child('Sound').push().set(i.toJson());
       // Tải lên tệp M4A
       await storageReference.putFile(
         file,
@@ -113,16 +113,14 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
   }
   Future<void> _hienThiFile() async {
     try {
-      Query refAnh = FirebaseDatabase.instance.ref('Img').orderByChild('name')/*reference().child('img')*/;
+      Query refAnh = FirebaseDatabase.instance.ref('Sound').orderByChild('name');
       refAnh.onValue.listen((event) {
         Map<dynamic, dynamic> values = event.snapshot.value as Map<dynamic, dynamic>;
         listItem.clear();
         values.forEach((key, item) {
           setState(() {
-            if(item['type'] == 2){
-              listItem.add(Img(key, item['name'].toString(), item['type'], ''));
+              listItem.add(Sound(key, item['name'].toString(), ''));
               layFileFireBase(item['name'].toString());
-            }
           });
         });
       }, onError: (error) {
@@ -134,16 +132,16 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
   Future<void> layFileFireBase(String tenAnh) async{
     Reference ref = FirebaseStorage.instance.ref().child(tenAnh);
     String url = await ref.getDownloadURL();
-    listItem.forEach((img) {
-      if(img.name == tenAnh){
+    listItem.forEach((sound) {
+      if(sound.name == tenAnh){
         setState(() {
-          img.link = url;
+          sound.link = url;
         });
       }
     });
   }
   Future<void> _xoaAnh(int index) async {
-    DatabaseReference deleteFB = FirebaseDatabase.instance.reference().child('Img/${listItem[index].key}');
+    DatabaseReference deleteFB = FirebaseDatabase.instance.reference().child('Sound/${listItem[index].key}');
     deleteFB.remove();
 
     final desertRef = FirebaseStorage.instance.ref().child(listItem[index].name.toString());
@@ -155,7 +153,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
       });
     });
   }
-  _xoaImgDialog(BuildContext context, int index) async {
+  _xoaSoundDialog(BuildContext context, int index) async {
     return showDialog(
         context: context,
         builder: (context) {
@@ -279,7 +277,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
                               ),
                               ElevatedButton(
                                 onPressed:(){
-                                  _xoaImgDialog(context, index);
+                                  _xoaSoundDialog(context, index);
                                 },
                                 child: const Text('Xóa bản ghi âm'),
                               ),

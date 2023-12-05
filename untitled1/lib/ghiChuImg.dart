@@ -142,7 +142,7 @@ class _ghiChu2 extends State<ghiChuImg> {
         final firebaseStorage =
             FirebaseStorage.instance.ref().child('$imageName.PNG');
         firebaseStorage.putData(_imageBytes!);
-        Img i = Img(imageName, '$imageName.PNG', 1, '');
+        Img i = Img(imageName, '$imageName.PNG', '');
         DatabaseReference postListRef = FirebaseDatabase.instance.reference();
         postListRef.child('Img').push().set(i.toJson());
         setState(() {
@@ -164,10 +164,8 @@ class _ghiChu2 extends State<ghiChuImg> {
         listAnh.clear();
         values.forEach((key, item) {
           setState(() {
-            if(item['type'] == 1){
-              listAnh.add(Img(key, item['name'].toString(), item['type'], ''));
-              layAnhFireBase(item['name'].toString());
-            }
+            listAnh.add(Img(key, item['name'].toString(), ''));
+            layAnhFireBase(item['name'].toString());
           });
         });
       }, onError: (error) {

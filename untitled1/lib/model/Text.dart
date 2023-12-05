@@ -1,15 +1,14 @@
-class Img {
+class Text {
 
   String? key;
   String? name;
-  String? link;
 
 
-  Img(this.key, this.name, this.link);
+  Text(this.key, this.name);
 
   Map<String, dynamic> toJson() {
     return {
-    'name': name,
+      'name': name,
     };
   }
 }

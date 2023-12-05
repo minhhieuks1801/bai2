@@ -3,6 +3,7 @@ import 'package:untitled1/ghiChuImg.dart';
 import 'package:untitled1/ghiChuTxt.dart';
 import 'package:untitled1/ghiChuSound.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:untitled1/XemThoiTiet.dart';
 import 'firebase_options.dart';
  Future<void> main() async {
    WidgetsFlutterBinding.ensureInitialized();
@@ -22,57 +23,76 @@ class bai2_firebase extends StatefulWidget{
 }
 
 class _ghiChu extends State<bai2_firebase> {
-  final TextEditingController _txtGhi = TextEditingController();
   List<dynamic> list = [];
+  late ThoiTietApi thoiTietApi = ThoiTietApi();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ghiChuTxt())
-                );
-              },
-              child: const Text('Bản ghi text',
-                style: TextStyle(fontSize: 15, color: Colors.lightBlue),
+      body: Expanded(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ghiChuTxt())
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.greenAccent, // Background color
+                ),
+                child: const Text('Bản ghi text',
+                  style: TextStyle(fontSize: 15, color: Colors.black),
+                ),
               ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ghiChuImg())
-                );
-              },
-              child: const Text('Bản ghi hình',
-                style: TextStyle(fontSize: 15, color: Colors.lightBlue),
 
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ghiChuImg())
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.greenAccent, // Background color
+                ),
+                child: const Text('Bản ghi hình',
+                  style: TextStyle(fontSize: 15, color: Colors.black),
+                ),
               ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ghiChuSound())
-                );
-              },
-              child: const Text('Bản ghi âm',
-                style: TextStyle(fontSize: 15, color: Colors.lightBlue),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ghiChuSound())
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.greenAccent, // Background color
+                ),
+                child: const Text('Bản ghi âm',
+                  style: TextStyle(fontSize: 15, color: Colors.black),
+                ),
               ),
-            ),
-          ],
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => XemThoiTiet(thoitietApi: thoiTietApi,))
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.greenAccent, // Background color
+                ),
+                child: const Text('Xem thời tiết',
+                  style: TextStyle(fontSize: 15, color: Colors.black),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
