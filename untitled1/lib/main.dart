@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled1/DemNguoc.dart';
 import 'package:untitled1/ghiChuImg.dart';
 import 'package:untitled1/ghiChuTxt.dart';
 import 'package:untitled1/ghiChuSound.dart';
@@ -88,6 +89,20 @@ class _ghiChu extends State<bai2_firebase> {
                   primary: Colors.greenAccent, // Background color
                 ),
                 child: const Text('Xem thời tiết',
+                  style: TextStyle(fontSize: 15, color: Colors.black),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const DemNguoc())
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.greenAccent, // Background color
+                ),
+                child: const Text('Đếm ngược',
                   style: TextStyle(fontSize: 15, color: Colors.black),
                 ),
               ),
