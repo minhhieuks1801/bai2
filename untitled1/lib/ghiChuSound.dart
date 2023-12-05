@@ -1,14 +1,10 @@
-import 'dart:ffi';
+
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
-//import 'package:flutter_sound/flutter_sound.dart';
 import 'package:record/record.dart';
-import 'package:path/path.dart';
 import 'package:audioplayers/audioplayers.dart' show PlayerState;
 
 
@@ -99,7 +95,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
     String name = DateTime.now().toString().split('.')[0];
     try {
       Reference storageReference = FirebaseStorage.instance.ref().child('$name.M4A');
-      Sound i = Sound(name, '$name.M4A', '');
+      Sound i = Sound(name, '$name.M4A', '', '', 'Nguyễn Minh Hiệu', 'khỉ đá 2.PNG', name);
       DatabaseReference postListRef = FirebaseDatabase.instance.reference();
       postListRef.child('Sound').push().set(i.toJson());
       // Tải lên tệp M4A
@@ -119,14 +115,14 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
         listItem.clear();
         values.forEach((key, item) {
           setState(() {
-              listItem.add(Sound(key, item['name'].toString(), ''));
+              listItem.add(Sound(key, item['name'].toString(), '', '', item['tacGia'].toString(), item['image'].toString(), item['thoiGian'].toString()));
               layFileFireBase(item['name'].toString());
+              layAnhFireBase(item['image'].toString());
           });
         });
       }, onError: (error) {
       });
     } catch(e){
-      print(e);
     }
   }
   Future<void> layFileFireBase(String tenAnh) async{
@@ -140,6 +136,18 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
       }
     });
   }
+  Future<void> layAnhFireBase(String tenAnh) async{
+    Reference ref = FirebaseStorage.instance.ref().child(tenAnh);
+    String url = await ref.getDownloadURL();
+    listItem.forEach((s) {
+      if(s.image == tenAnh){
+        setState(() {
+          s.linkAnh = url;
+        });
+      }
+    });
+  }
+
   Future<void> _xoaAnh(int index) async {
     DatabaseReference deleteFB = FirebaseDatabase.instance.reference().child('Sound/${listItem[index].key}');
     deleteFB.remove();
@@ -181,6 +189,43 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
           );
         });
   }
+
+  _XemThongTinSoundDialog(BuildContext context, int index) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Scrollbar(
+                child: Container(
+                  height: 240,
+                  child: Column(
+                    children: [
+                      Text('Tác giả: ${listItem[index].name}' ),
+                      Text('Thời gian: ${listItem[index].thoiGian}'),
+                      Container(
+                        height: 200,
+                        child: Image.network(
+                          listItem[index].linkAnh.toString(),
+                          height: 200,
+                          width: 300,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                child: const Text('Canel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   String formatTime(Duration duration){
     String twoDigits (int n) => n.toString().padLeft(2, '0');
     String H = twoDigits(duration.inHours);
@@ -195,7 +240,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white60,
-      appBar: AppBar(title: Text('Ghi âm')),
+      appBar: AppBar(title: const Text('Ghi âm')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -271,6 +316,15 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
                                     isPlaying = true;
                                   },
                                   child: const Text('Nghe')
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              ElevatedButton(
+                                  onPressed: (){
+                                    _XemThongTinSoundDialog(context, index);
+                                  },
+                                  child: const Text('Xem thông tin')
                               ),
                               const SizedBox(
                                 height: 10,

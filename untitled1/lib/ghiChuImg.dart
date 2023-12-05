@@ -32,7 +32,7 @@ class _ghiChu2 extends State<ghiChuImg> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Chụp hình')),
+      appBar: AppBar(title: Text('Ghi hình')),
       backgroundColor: Colors.greenAccent,
       body: Container(
         margin: const EdgeInsets.only(top: 10),

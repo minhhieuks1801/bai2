@@ -22,6 +22,7 @@ class _ghiChu1 extends State<ghiChuTxt> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Ghi văn bản')),
       body: Center(
         child: ListView(
           children: [

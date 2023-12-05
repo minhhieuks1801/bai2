@@ -45,6 +45,7 @@ class _xemThoiTiet1 extends State<XemThoiTiet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Xem thời tiết')),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
