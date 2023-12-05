@@ -197,11 +197,12 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
           return AlertDialog(
             content: Scrollbar(
                 child: Container(
-                  height: 240,
+                  height: 300,
                   child: Column(
                     children: [
-                      Text('Tác giả: ${listItem[index].name}' ),
+                      Text('Tác giả: ${listItem[index].tacGia}' ),
                       Text('Thời gian: ${listItem[index].thoiGian}'),
+                      Text('Tên: ${listItem[index].name}'),
                       Container(
                         height: 200,
                         child: Image.network(
