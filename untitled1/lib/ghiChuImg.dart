@@ -17,8 +17,6 @@ class ghiChuImg extends StatefulWidget {
 }
 
 class _ghiChu2 extends State<ghiChuImg> {
-  final TextEditingController _txtGhi = TextEditingController();
-  Map<String, Uint8List>? list;
   Uint8List? _imageBytes;
   Query ref = FirebaseDatabase.instance.ref();
   Query refAnh = FirebaseDatabase.instance.ref().child('img');

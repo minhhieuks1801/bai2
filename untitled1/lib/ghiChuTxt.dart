@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'model/Txt.dart';
 
 class ghiChuTxt extends StatefulWidget{
   const ghiChuTxt({super.key});
@@ -10,11 +11,16 @@ class ghiChuTxt extends StatefulWidget{
 
 class _ghiChu1 extends State<ghiChuTxt> {
   final TextEditingController _txtGhi = TextEditingController();
-  List<String> list = [];
+  List<Txt> listTxt = [];
+
+  @override
+  void initState() {
+    _hienThiGhiChu();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    duyet();
     return Scaffold(
       body: Center(
         child: ListView(
@@ -27,7 +33,7 @@ class _ghiChu1 extends State<ghiChuTxt> {
                 style: TextStyle(fontSize: 15, color: Colors.black),
               ),
             ),
-            for(int i = 0; i < list.length; i++)
+            for(int i = 0; i < listTxt.length; i++)
               ListTile(
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -38,14 +44,14 @@ class _ghiChu1 extends State<ghiChuTxt> {
                           .of(context)
                           .size
                           .width * 0.5,
-                      child: Text(list[i].toString(),
+                      child: Text(listTxt[i].name.toString(),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     const Expanded(child: SizedBox()),
                     ElevatedButton(
                       onPressed: () {
-                        _xemTextDialog(context, list[i].toString());
+                        _xemTextDialog(context, listTxt[i].name.toString());
                       },
                       child: const Text('Xem'),
                     ),
@@ -54,7 +60,7 @@ class _ghiChu1 extends State<ghiChuTxt> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        list.remove(list[i]);
+                        _xoaImgDialog(context ,i);
                         setState(() {});
                       },
                       child: const Text('Xóa'),
@@ -66,23 +72,6 @@ class _ghiChu1 extends State<ghiChuTxt> {
         ),
       ),
     );
-  }
-
-  _getSP() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? listitems = prefs.getStringList('items');
-    list = listitems!;
-    setState(() {});
-  }
-
-  void duyet(){
-    _getSP();
-    setState(() {});
-  }
-
-  _setSP() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('items', list);
   }
 
   _nhapTextDialog(BuildContext context) async {
@@ -99,8 +88,10 @@ class _ghiChu1 extends State<ghiChuTxt> {
                 child: const Text('Nhập'),
                 onPressed: () {
                   Navigator.of(context).pop();
-                  list.add(_txtGhi.text);
-                  _setSP();
+                  String imageName = DateTime.now().toString().split('.')[0];
+                  Txt i = Txt(imageName, _txtGhi.text.toString());
+                  DatabaseReference postListRef = FirebaseDatabase.instance.reference();
+                  postListRef.child('Txt').push().set(i.toJson());
                   setState(() {});
                 },
               ),
@@ -115,7 +106,9 @@ class _ghiChu1 extends State<ghiChuTxt> {
         builder: (context) {
           return AlertDialog(
             content: Scrollbar(
-                child: Text(a)
+                child: Text(a,
+                  style: const TextStyle(fontSize: 25, color: Colors.black),
+                )
             ),
             actions: <Widget>[
               ElevatedButton(
@@ -127,5 +120,63 @@ class _ghiChu1 extends State<ghiChuTxt> {
             ],
           );
         });
+  }
+  _xoaImgDialog(BuildContext context, int index) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: const Scrollbar(
+              child: Text('Bạn có muốn xóa ghi chú không?'),
+            ),
+            actions: <Widget>[
+
+              ElevatedButton(
+                onPressed: () {
+                  _xoaGhiChu(index);
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Có'),
+              ),
+
+              ElevatedButton(
+                child: const Text('Canel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _xoaGhiChu(int index) async {
+    DatabaseReference deleteFB = FirebaseDatabase.instance.reference().child('Txt/${listTxt[index].key}');
+    deleteFB.remove();
+    setState(() {
+      listTxt.removeAt(index);
+      Future.delayed(const Duration(seconds: 2), () {
+        _hienThiGhiChu();
+      });
+    });
+  }
+
+
+  Future<void> _hienThiGhiChu() async {
+    try {
+      Query refAnh = FirebaseDatabase.instance.ref('Txt').orderByChild('name')/*reference().child('img')*/;
+      refAnh.onValue.listen((event) {
+        Map<dynamic, dynamic> values = event.snapshot.value as Map<dynamic, dynamic>;
+        listTxt.clear();
+        values.forEach((key, item) {
+          setState(() {
+            listTxt.add(Txt(key, item['name'].toString()));
+          });
+        });
+      }, onError: (error) {
+      });
+    } catch(e){
+      print(e);
+    }
   }
 }
