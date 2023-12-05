@@ -69,7 +69,7 @@ class _xemThoiTiet1 extends State<XemThoiTiet> {
             style: ElevatedButton.styleFrom(
               primary: Colors.greenAccent, // Background color
             ),
-              child: const Text('Chọn thành phố!',
+              child: const Text('Chọn thành phố',
                   style: TextStyle(fontSize: 25, color: Colors.black)
               ),
           ),
