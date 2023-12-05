@@ -134,6 +134,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                             onChanged: (bool value) {
                               setState(() {
                                   listTacVu[index].tinhTrang = value? true: false;
+                                  
                               });
                             },
                           ),
