@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/model/TacVu.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 
 class QuanLyTacVu extends StatefulWidget{
@@ -70,6 +71,12 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
         });
   }
 
+  Future<void> _UpdateFirebase(int index) async {
+    DatabaseReference postListRef = FirebaseDatabase.instance.reference();
+    postListRef.child('TacVu/${listTacVu[index].key}').update(listTacVu[index].toJson());
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,7 +141,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                             onChanged: (bool value) {
                               setState(() {
                                   listTacVu[index].tinhTrang = value? true: false;
-                                  
+
                               });
                             },
                           ),
