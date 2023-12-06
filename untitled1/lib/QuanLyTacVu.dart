@@ -13,10 +13,62 @@ class QuanLyTacVu extends StatefulWidget{
 class _QuanLyTacVu1 extends State<QuanLyTacVu> {
   final TextEditingController _txtTenTask = TextEditingController();
   final TextEditingController _txtNoiDungTask = TextEditingController();
-  List<TacVu> listTacVu = [TacVu('001', 'Tác vụ 1', 'Hoàn thành app tác vũ', false),
-                           TacVu('001', 'Tác vụ 2', 'Hoàn thành app tác vụ', true),];
+  List<TacVu> listTacVu = [];
 
-  _xoaImgDialog(BuildContext context) async {
+  @override
+  void initState() {
+    _hienThiTacVu();
+    super.initState();
+  }
+
+
+
+  Future<void> _hienThiTacVu() async {
+    try {
+      Query refAnh = FirebaseDatabase.instance.ref('TacVu').orderByChild('tieuDe');
+      refAnh.onValue.listen((event) {
+        Map<dynamic, dynamic> values = event.snapshot.value as Map<dynamic, dynamic>;
+        listTacVu.clear();
+        values.forEach((key, item) {
+          setState(() {
+            print(item['tinhTrang']);
+            listTacVu.add(TacVu(key,
+                item['tieuDe'].toString(),
+                item['noiDung'].toString(),
+                item['tinhTrang']));
+          });
+        });
+      }, onError: (error) {
+      });
+    } catch(e){
+      print(e);
+    }
+  }
+
+  Future<void> _hienThiTacVuChuaHoanThanh() async {
+    try {
+      Query refAnh = FirebaseDatabase.instance.ref('TacVu').orderByChild('tieuDe');
+      refAnh.onValue.listen((event) {
+        Map<dynamic, dynamic> values = event.snapshot.value as Map<dynamic, dynamic>;
+        listTacVu.clear();
+        values.forEach((key, item) {
+          setState(() {
+            if(item['tinhTrang'] == false){
+              listTacVu.add(TacVu(key,
+                  item['tieuDe'].toString(),
+                  item['noiDung'].toString(),
+                  item['tinhTrang']));
+            }
+          });
+        });
+      }, onError: (error) {
+      });
+    } catch(e){
+      print(e);
+    }
+  }
+
+  _ThemTacVuDialog(BuildContext context) async {
     return showDialog(
         context: context,
         builder: (context) {
@@ -55,13 +107,17 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
 
               ElevatedButton(
                 onPressed: () {
+                  TacVu t = TacVu('', _txtTenTask.text.toString(), _txtNoiDungTask.text.toString(), false);
+                  DatabaseReference postListRef = FirebaseDatabase.instance.reference();
+                  postListRef.child('TacVu').push().set(t.toJson());
+                  setState(() {});
                   Navigator.of(context).pop();
                 },
                 child: const Text('Lưu'),
               ),
 
               ElevatedButton(
-                child: const Text('Canel'),
+                child: const Text('Thoát'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -71,10 +127,115 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
         });
   }
 
+  _SuaTacVuDialog(BuildContext context, int index) async {
+    final TextEditingController _txtSuaTen = TextEditingController(text: listTacVu[index].tieuDe.toString());
+    final TextEditingController _txtSuaNoiDUng = TextEditingController(text: listTacVu[index].noiDung.toString());
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: SizedBox(
+              height: 400,
+              width: 300,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextField(
+                    controller: _txtSuaTen,
+                    style: const TextStyle(fontSize: 20, color: Colors.black),
+                    maxLines: 1,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Tiêu đề',
+                        labelStyle: TextStyle(fontSize: 20, color: Colors.grey)
+                    ),
+                  ),
+                  TextField(
+                    controller: _txtSuaNoiDUng,
+                    style: const TextStyle(fontSize: 20, color: Colors.black),
+                    maxLines: 5,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        //contentPadding: EdgeInsets.symmetric(vertical: 40),
+                        labelText: 'Nội dung',
+                        labelStyle: TextStyle(fontSize: 20, color: Colors.grey)
+                    ),
+                  ),
+                  Text(
+                      'Tình trạng: ${listTacVu[index].tinhTrang? 'Đã hoàn thành' : 'Chưa hoàn thành'}',
+                      style: const TextStyle(fontSize: 20, color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+
+              ElevatedButton(
+                onPressed: () {
+                  listTacVu[index].tieuDe = _txtSuaTen.text.toString();
+                  listTacVu[index].noiDung = _txtSuaNoiDUng.text.toString();
+                  DatabaseReference postListRef = FirebaseDatabase.instance.reference();
+                  postListRef.child('TacVu/${listTacVu[index].key}').update(listTacVu[index].toJson());
+                  setState(() {});
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Lưu'),
+              ),
+
+              ElevatedButton(
+                child: const Text('Thoát'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  _xoaTacVuDialog(BuildContext context, int index) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: const Scrollbar(
+              child: Text('Bạn có muốn xóa tác vụ không?'),
+            ),
+            actions: <Widget>[
+
+              ElevatedButton(
+                onPressed: () {
+                  _xoaTacVu(index);
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Có'),
+              ),
+
+              ElevatedButton(
+                child: const Text('Thoát'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  Future<void> _xoaTacVu(int index) async {
+    DatabaseReference deleteFB = FirebaseDatabase.instance.reference().child('TacVu/${listTacVu[index].key}');
+    deleteFB.remove();
+    setState(() {
+      listTacVu.removeAt(index);
+      Future.delayed(const Duration(seconds: 2), () {
+        _hienThiTacVu();
+      });
+    });
+  }
+
   Future<void> _UpdateFirebase(int index) async {
     DatabaseReference postListRef = FirebaseDatabase.instance.reference();
     postListRef.child('TacVu/${listTacVu[index].key}').update(listTacVu[index].toJson());
-
   }
 
   @override
@@ -89,7 +250,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    _xoaImgDialog(context);
+                    _ThemTacVuDialog(context);
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.greenAccent, // Background color
@@ -98,19 +259,32 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                     style: TextStyle(fontSize: 20, color: Colors.black),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const QuanLyTacVu())
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.greenAccent, // Background color
-                  ),
-                  child: const Text('Tác vụ chưa hoàn thành',
-                    style: TextStyle(fontSize: 20, color: Colors.black),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        _hienThiTacVu();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.greenAccent, // Background color
+                      ),
+                      child: const Text('Tất cả',
+                        style: TextStyle(fontSize: 20, color: Colors.black),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        _hienThiTacVuChuaHoanThanh();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.greenAccent, // Background color
+                      ),
+                      child: const Text('Chưa hoàn thành',
+                        style: TextStyle(fontSize: 20, color: Colors.black),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -137,10 +311,18 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                           ),
                           Switch(
                             value: listTacVu[index].tinhTrang,
-                            thumbColor: const MaterialStatePropertyAll<Color>(Colors.black),
+                            thumbColor: const MaterialStatePropertyAll<Color>(Colors.red),
                             onChanged: (bool value) {
                               setState(() {
-                                  listTacVu[index].tinhTrang = value? true: false;
+                                if(value){
+                                  listTacVu[index].tinhTrang = true;
+                                  _UpdateFirebase(index);
+                                }
+                                else{
+                                  listTacVu[index].tinhTrang = false;
+                                  _UpdateFirebase(index);
+                                }
+
 
                               });
                             },
@@ -150,6 +332,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                           ),
                           ElevatedButton(
                             onPressed: () {
+                              _SuaTacVuDialog(context, index);
                             },
                             child: const Text('Xem'),
                           ),
@@ -158,7 +341,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              setState(() {});
+                              _xoaTacVuDialog(context, index);
                             },
                             child: const Text('Xóa'),
                           ),
