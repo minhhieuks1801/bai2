@@ -29,7 +29,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
   String link = 'https://www.voicify.ai/_next/image?url=https%3A%2F%2Fimagecdn.voicify.ai%2Fmodels%2Fd511a649-8b3c-465e-8002-da07c5d024ca.png&w=640&q=100';
-  bool n = false;
+  bool moNhac = false;
   Duration? k;
 
   @override
@@ -64,7 +64,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            n?
+            moNhac?
               Column(
                 children: [
                   RotationTransition(
@@ -153,7 +153,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
                                       playRecording(index);
                                       link = listItem[index].linkAnh.toString();
                                       isPlaying = true;
-                                      n = true;
+                                      moNhac = true;
                                       k = const Duration(seconds: 500);
                                     },
                                     child: const Text('Nghe')
