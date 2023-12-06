@@ -67,8 +67,11 @@ class _ghiChu2 extends State<ghiChuImg> {
                     itemCount: listAnh.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
-                        color: const Color(0xffF4E869),
                         margin: const EdgeInsets.all(20.0),
+                        decoration: BoxDecoration(
+                          color: const Color(0xffF4E869),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [

@@ -22,6 +22,7 @@ class _ghiChu1 extends State<ghiChuTxt> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(title: const Text('Ghi văn bản')),
       body: Center(
         child: ListView(
@@ -30,6 +31,9 @@ class _ghiChu1 extends State<ghiChuTxt> {
               onPressed: () {
                 _nhapTextDialog(context);
               },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.greenAccent, // Background color
+              ),
               child: const Text('Thêm',
                 style: TextStyle(fontSize: 15, color: Colors.black),
               ),
@@ -47,6 +51,7 @@ class _ghiChu1 extends State<ghiChuTxt> {
                           .width * 0.5,
                       child: Text(listTxt[i].name.toString(),
                         overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 20, color: Colors.white)
                       ),
                     ),
                     const Expanded(child: SizedBox()),
@@ -54,6 +59,9 @@ class _ghiChu1 extends State<ghiChuTxt> {
                       onPressed: () {
                         _xemTextDialog(context, listTxt[i].name.toString());
                       },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.lightGreenAccent, // Background color
+                      ),
                       child: const Text('Xem'),
                     ),
                     const SizedBox(
@@ -64,6 +72,9 @@ class _ghiChu1 extends State<ghiChuTxt> {
                         _xoaImgDialog(context ,i);
                         setState(() {});
                       },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.lightGreenAccent, // Background color
+                      ),
                       child: const Text('Xóa'),
                     ),
                   ],

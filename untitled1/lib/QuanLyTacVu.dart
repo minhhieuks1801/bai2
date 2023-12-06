@@ -294,9 +294,12 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                   itemCount: listTacVu.length,
                   itemBuilder: (BuildContext context, int index){
                     return Container(
-                      color: const Color(0xffF4E869),
                       height: 100,
                       margin: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        color: const Color(0xffF4E869),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       child: Row(
                         children: [
                           SizedBox(
@@ -322,8 +325,6 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                                   listTacVu[index].tinhTrang = false;
                                   _UpdateFirebase(index);
                                 }
-
-
                               });
                             },
                           ),
