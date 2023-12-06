@@ -73,6 +73,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
                       padding: const EdgeInsets.all(8.0),
                       child: ClipOval(
                         child: Image.network(
+                          fit: BoxFit.fill,
                           link,
                           height: 300,
                           width: 300,
@@ -348,8 +349,9 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
                       height: 200,
                       child: Image.network(
                         listItem[index].linkAnh.toString(),
-                        height: 200,
-                        width: 300,
+                        fit: BoxFit.fill,
+                        height: 300,
+                        width: 200,
                       ),
                     ),
                   ],

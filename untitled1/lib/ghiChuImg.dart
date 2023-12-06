@@ -29,7 +29,7 @@ class _ghiChu2 extends State<ghiChuImg> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Ghi hình')),
+      appBar: AppBar(title: const Text('Ghi hình')),
       backgroundColor: Colors.greenAccent,
       body: Container(
         margin: const EdgeInsets.only(top: 10),
@@ -45,6 +45,7 @@ class _ghiChu2 extends State<ghiChuImg> {
                   Row(
                     children: [
                       Image.memory(
+                        fit: BoxFit.fill,
                         _imageBytes!,
                         height: 200,
                         width: 200,
@@ -72,10 +73,14 @@ class _ghiChu2 extends State<ghiChuImg> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             (listAnh[index].link == '') ? const Text('loading!') :
-                            Image.network(
-                              listAnh[index].link.toString(),
-                              height: 200,
-                              width: 100,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 0, top: 12, right: 0, bottom: 12),
+                              child: Image.network(
+                                listAnh[index].link.toString(),
+                                fit: BoxFit.fill,
+                                height: 120,
+                                width: 120,
+                              ),
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -189,8 +194,9 @@ class _ghiChu2 extends State<ghiChuImg> {
     final desertRef = FirebaseStorage.instance.ref().child(listAnh[index].name.toString());
     await desertRef.delete();
     setState(() {
-      listAnh.removeAt(index);
+      //listAnh.removeAt(index);
       Future.delayed(const Duration(seconds: 2), () {
+        listAnh.removeAt(index);
         _hienThiAnh();
       });
     });
@@ -233,8 +239,9 @@ class _ghiChu2 extends State<ghiChuImg> {
             content: Scrollbar(
                 child: Image.network(
                   a,
-                  height: 400,
-                  width: 200,
+                  fit: BoxFit.fill,
+                  height: 300,
+                  width: 300,
                 ),
             ),
             actions: <Widget>[

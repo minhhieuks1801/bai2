@@ -157,7 +157,6 @@ class _ghiChu1 extends State<ghiChuTxt> {
     setState(() {
       listTxt.removeAt(index);
       Future.delayed(const Duration(seconds: 2), () {
-        _hienThiGhiChu();
       });
     });
   }
