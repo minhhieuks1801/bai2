@@ -153,6 +153,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
                                     link = listItem[index].linkAnh.toString();
                                     isPlaying = true;
                                     n = true;
+                                    k = const Duration(seconds: 500);
                                   },
                                   child: const Text('Nghe')
                               ),
@@ -371,8 +372,9 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
 
   }
 
+  Duration? k;
   late final AnimationController _controller = AnimationController(
-    duration: const Duration(seconds: 500),
+    duration: k,
     vsync: this,
   )..repeat(reverse: true);
   late final Animation<double> _animation = CurvedAnimation(
