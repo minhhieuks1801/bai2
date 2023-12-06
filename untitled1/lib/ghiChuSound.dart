@@ -98,7 +98,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
       Sound i = Sound(name, '$name.M4A', '', '', 'Nguyễn Minh Hiệu', 'khỉ đá 2.PNG', name);
       DatabaseReference postListRef = FirebaseDatabase.instance.reference();
       postListRef.child('Sound').push().set(i.toJson());
-      // Tải lên tệp M4A
+      // Tải lên là tệp M4a
       await storageReference.putFile(
         file,
         SettableMetadata(contentType: 'audio/m4a'), //
