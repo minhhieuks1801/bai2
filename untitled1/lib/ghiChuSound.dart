@@ -30,6 +30,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
   Duration position = Duration.zero;
   String link = 'https://www.voicify.ai/_next/image?url=https%3A%2F%2Fimagecdn.voicify.ai%2Fmodels%2Fd511a649-8b3c-465e-8002-da07c5d024ca.png&w=640&q=100';
   bool n = false;
+  Duration? k;
 
   @override
   void initState() {
@@ -236,7 +237,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
       // Tải lên là tệp M4a
       await storageReference.putFile(
         file,
-        SettableMetadata(contentType: 'audio/m4a'), //
+        SettableMetadata(contentType: 'audio/m4a'),
       );
     } catch (e) {
       print('Error uploading file: $e');
@@ -372,7 +373,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
 
   }
 
-  Duration? k;
+
   late final AnimationController _controller = AnimationController(
     duration: k,
     vsync: this,
