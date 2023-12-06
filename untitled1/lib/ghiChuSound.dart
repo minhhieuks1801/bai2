@@ -28,6 +28,8 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
+  String link = 'https://www.voicify.ai/_next/image?url=https%3A%2F%2Fimagecdn.voicify.ai%2Fmodels%2Fd511a649-8b3c-465e-8002-da07c5d024ca.png&w=640&q=100';
+  bool n = false;
 
   @override
   void initState() {
@@ -50,6 +52,140 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
       });
     });
     super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white60,
+      appBar: AppBar(title: const Text('Ghi âm')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            n?
+              Column(
+                children: [
+                  RotationTransition(
+                    turns: _animation,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ClipOval(
+                        child: Image.network(
+                          link,
+                          height: 300,
+                          width: 300,
+
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 15, top: 0, right: 15, bottom: 0),
+                    child: Slider(
+                      min: 0,
+                      max: duration.inSeconds.toDouble(),
+                      value: position.inSeconds.toDouble(),
+                      onChanged: (value) async {
+                        final position = Duration(seconds: value.toInt());
+                        await audioPlayer.seek(position);
+                        await audioPlayer.resume();
+                      },
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 20, top: 0, right: 20, bottom: 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(formatTime(duration),
+                            style: const TextStyle(fontSize: 25, color: Colors.red)),
+                        Text(formatTime(position),
+                            style: const TextStyle(fontSize: 25, color: Colors.red)),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: (){
+                      isPlaying? audioPlayer.pause() : audioPlayer.resume();
+                    }, child: isPlaying? const Text('Dừng') : const Text('Nghe tiếp'),
+                  ),
+                ],
+              ) :
+              const SizedBox(
+                height: 30,
+              ),
+            ElevatedButton(
+                onPressed: !isRecording ? startRecording: stopRecording,
+                child: !isRecording ? const Text('Bắt đầu ghi âm') : const Text('Dừng ghi âm')
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            if(!isRecording && audioPath != null)
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: listItem.length,
+                    itemBuilder: (BuildContext context, int index){
+                    return Container(
+                      color: const Color(0xffF4E869),
+                      margin: const EdgeInsets.all(20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                listItem[index].name.toString().substring(
+                                    0, listItem[index].name.toString().length - 4),
+                                style: const TextStyle(
+                                    fontSize: 15, color: Colors.red),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              ElevatedButton(
+                                  onPressed: (){
+                                    playRecording(index);
+                                    link = listItem[index].linkAnh.toString();
+                                    isPlaying = true;
+                                    n = true;
+                                  },
+                                  child: const Text('Nghe')
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              ElevatedButton(
+                                  onPressed: (){
+                                    _XemThongTinSoundDialog(context, index);
+                                  },
+                                  child: const Text('Xem thông tin')
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              ElevatedButton(
+                                onPressed:(){
+                                  _xoaSoundDialog(context, index);
+                                },
+                                child: const Text('Xóa bản ghi âm'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                    }
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -90,8 +226,6 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
   }
   Future<void> uploadFile() async {
     File file = File(audioPath!);
-    //String fileName = file.path.split('/').last;
-
     String name = DateTime.now().toString().split('.')[0];
     try {
       Reference storageReference = FirebaseStorage.instance.ref().child('$name.M4A');
@@ -115,9 +249,9 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
         listItem.clear();
         values.forEach((key, item) {
           setState(() {
-              listItem.add(Sound(key, item['name'].toString(), '', '', item['tacGia'].toString(), item['image'].toString(), item['thoiGian'].toString()));
-              layFileFireBase(item['name'].toString());
-              layAnhFireBase(item['image'].toString());
+            listItem.add(Sound(key, item['name'].toString(), '', '', item['tacGia'].toString(), item['image'].toString(), item['thoiGian'].toString()));
+            layFileFireBase(item['name'].toString());
+            layAnhFireBase(item['image'].toString());
           });
         });
       }, onError: (error) {
@@ -196,24 +330,24 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
         builder: (context) {
           return AlertDialog(
             content: Scrollbar(
-                child: Container(
-                  height: 300,
-                  child: Column(
-                    children: [
-                      Text('Tác giả: ${listItem[index].tacGia}' ),
-                      Text('Thời gian: ${listItem[index].thoiGian}'),
-                      Text('Tên: ${listItem[index].name}'),
-                      Container(
+              child: Container(
+                height: 300,
+                child: Column(
+                  children: [
+                    Text('Tác giả: ${listItem[index].tacGia}' ),
+                    Text('Thời gian: ${listItem[index].thoiGian}'),
+                    Text('Tên: ${listItem[index].name}'),
+                    Container(
+                      height: 200,
+                      child: Image.network(
+                        listItem[index].linkAnh.toString(),
                         height: 200,
-                        child: Image.network(
-                          listItem[index].linkAnh.toString(),
-                          height: 200,
-                          width: 300,
-                        ),
+                        width: 300,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+              ),
             ),
             actions: <Widget>[
               ElevatedButton(
@@ -234,120 +368,17 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
     String S = twoDigits(duration.inSeconds.remainder(60));
     return [if(duration.inHours > 0 )
       H, M, S].join(':');
-    
+
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white60,
-      appBar: AppBar(title: const Text('Ghi âm')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const SizedBox(
-              height: 30,
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 15, top: 0, right: 15, bottom: 0),
-              child: Slider(
-                min: 0,
-                max: duration.inSeconds.toDouble(),
-                value: position.inSeconds.toDouble(),
-                onChanged: (value) async {
-                  final position = Duration(seconds: value.toInt());
-                  await audioPlayer.seek(position);
-                  await audioPlayer.resume();
-                },
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 20, top: 0, right: 20, bottom: 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(formatTime(duration),
-                    style: const TextStyle(fontSize: 25, color: Colors.red)),
-                  Text(formatTime(position),
-                      style: const TextStyle(fontSize: 25, color: Colors.red)),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              onPressed: (){
-                  isPlaying? audioPlayer.pause() : audioPlayer.resume();
-              }, child: isPlaying? const Text('Dừng') : const Text('Nghe tiếp'),
-            ),
-            ElevatedButton(
-                onPressed: !isRecording ? startRecording: stopRecording,
-                child: !isRecording ? const Text('Bắt đầu ghi âm') : const Text('Dừng ghi âm')
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            if(!isRecording && audioPath != null)
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: listItem.length,
-                    itemBuilder: (BuildContext context, int index){
-                    return Container(
-                      color: const Color(0xffF4E869),
-                      margin: const EdgeInsets.all(20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(seconds: 500),
+    vsync: this,
+  )..repeat(reverse: true);
+  late final Animation<double> _animation = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.elasticOut,
+  );
 
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                listItem[index].name.toString().substring(
-                                    0, listItem[index].name.toString().length - 4),
-                                style: const TextStyle(
-                                    fontSize: 15, color: Colors.red),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              ElevatedButton(
-                                  onPressed: (){
-                                    playRecording(index);
-                                    isPlaying = true;
-                                  },
-                                  child: const Text('Nghe')
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              ElevatedButton(
-                                  onPressed: (){
-                                    _XemThongTinSoundDialog(context, index);
-                                  },
-                                  child: const Text('Xem thông tin')
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              ElevatedButton(
-                                onPressed:(){
-                                  _xoaSoundDialog(context, index);
-                                },
-                                child: const Text('Xóa bản ghi âm'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                    }
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
 
 }
