@@ -129,58 +129,63 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
                   padding: const EdgeInsets.all(8),
                   itemCount: listItem.length,
                     itemBuilder: (BuildContext context, int index){
-                    return Container(
-                      color: const Color(0xffF4E869),
-                      margin: const EdgeInsets.all(20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
+                      return Container(
+                        color: const Color(0xffF4E869),
+                        margin: const EdgeInsets.all(20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
 
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                listItem[index].name.toString().substring(
-                                    0, listItem[index].name.toString().length - 4),
-                                style: const TextStyle(
-                                    fontSize: 15, color: Colors.red),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              ElevatedButton(
-                                  onPressed: (){
-                                    playRecording(index);
-                                    link = listItem[index].linkAnh.toString();
-                                    isPlaying = true;
-                                    n = true;
-                                    k = const Duration(seconds: 500);
-                                  },
-                                  child: const Text('Nghe')
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              ElevatedButton(
-                                  onPressed: (){
-                                    _XemThongTinSoundDialog(context, index);
-                                  },
-                                  child: const Text('Xem thông tin')
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              ElevatedButton(
-                                onPressed:(){
-                                  _xoaSoundDialog(context, index);
-                                },
-                                child: const Text('Xóa bản ghi âm'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  listItem[index].name.toString().substring(
+                                      0, listItem[index].name.toString().length - 4),
+                                  style: const TextStyle(
+                                      fontSize: 15, color: Colors.red),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                ElevatedButton(
+                                    onPressed: (){
+                                      playRecording(index);
+                                      link = listItem[index].linkAnh.toString();
+                                      isPlaying = true;
+                                      n = true;
+                                      k = const Duration(seconds: 500);
+                                    },
+                                    child: const Text('Nghe')
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    ElevatedButton(
+                                        onPressed: (){
+                                          _XemThongTinSoundDialog(context, index);
+                                        },
+                                        child: const Text('Xem thông tin')
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    ElevatedButton(
+                                      onPressed:(){
+                                        _xoaSoundDialog(context, index);
+                                      },
+                                      child: const Text('Xóa bản ghi âm'),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
                     }
                 ),
               ),
