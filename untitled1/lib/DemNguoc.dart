@@ -10,7 +10,7 @@ class DemNguoc extends StatefulWidget {
 }
 
 class _DongHo extends State<DemNguoc> {
-  Duration? thoiGian = Duration.zero;
+  Duration thoiGian = Duration.zero;
   int gio = 0, phut = 0, giay = 0;
   late Timer timer;
   bool a = false;
@@ -131,8 +131,8 @@ class _DongHo extends State<DemNguoc> {
                         else{
                           timer = Timer.periodic(const Duration(seconds: 1), (timer) {
                             setState(() {
-                              if (thoiGian!.inSeconds > 0) {
-                                thoiGian = (thoiGian! - const Duration(seconds: 1));
+                              if (thoiGian.inSeconds > 0) {
+                                thoiGian = (thoiGian - const Duration(seconds: 1));
                               } else {
                                 timer.cancel();
                               }
@@ -160,7 +160,7 @@ class _DongHo extends State<DemNguoc> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(formatTime(thoiGian!),
+                Text(formatTime(thoiGian),
                   style: const TextStyle(fontSize: 50, color: Colors.white),
                 ),
               ],
@@ -181,12 +181,12 @@ class _DongHo extends State<DemNguoc> {
   }
 
   void demNguoc() {
-    int s = gio!* 3600 +phut!*60 + giay!;
+    int s = gio* 3600 +phut*60 + giay;
     thoiGian = Duration(seconds: s);
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
-        if (thoiGian!.inSeconds > 0) {
-          thoiGian = (thoiGian! - const Duration(seconds: 1));
+        if (thoiGian.inSeconds > 0) {
+          thoiGian = (thoiGian - const Duration(seconds: 1));
         } else {
           timer.cancel();
         }
