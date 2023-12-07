@@ -42,7 +42,7 @@ class _ghiChu2 extends State<ghiChuImg> {
                   iconSize: 60,
                   color: Colors.red,
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.black, // Background color
+                    primary: Colors.white, // Background color
                   ),
                   icon: const Icon(
                       Icons.add
