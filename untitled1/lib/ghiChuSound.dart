@@ -126,7 +126,6 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
                             link = listItem[d].linkAnh.toString();
                             setState(() {
                             });
-
                           }
                         },
                         iconSize: 72,
@@ -181,28 +180,30 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
                   itemCount: listItem.length,
                     itemBuilder: (BuildContext context, int index){
                       return Container(
-                        margin: const EdgeInsets.all(20.0),
+                        margin: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.only(left: 15, top: 4, right: 0, bottom: 4),
                         decoration: BoxDecoration(
                           color: const Color(0xffF4E869),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  listItem[index].name.toString().substring(
+                                SizedBox(
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.5,
+                                  child: Text(listItem[index].name.toString().substring(
                                       0, listItem[index].name.toString().length - 4),
-                                  style: const TextStyle(
-                                      fontSize: 15, color: Colors.red),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(fontSize: 20, color: Colors.black)
+                                  ),
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                ElevatedButton(
+                                IconButton(
                                     onPressed: (){
                                       playRecording(index);
                                       link = listItem[index].linkAnh.toString();
@@ -211,32 +212,26 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
                                       setState(() {
                                         k = const Duration(seconds: 500);
                                       });
-
                                     },
-                                    child: const Text('Nghe')
+                                  icon: const Icon(
+                                      Icons.play_circle
+                                  ),
                                 ),
-                                const SizedBox(
-                                  height: 10,
+                                IconButton(
+                                  onPressed: (){
+                                    _XemThongTinSoundDialog(context, index);
+                                  },
+                                  icon: const Icon(
+                                      Icons.visibility
+                                  ),
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    ElevatedButton(
-                                        onPressed: (){
-                                          _XemThongTinSoundDialog(context, index);
-                                        },
-                                        child: const Text('Xem thông tin')
-                                    ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    ElevatedButton(
-                                      onPressed:(){
-                                        _xoaSoundDialog(context, index);
-                                      },
-                                      child: const Text('Xóa bản ghi âm'),
-                                    ),
-                                  ],
+                                IconButton(
+                                  onPressed:(){
+                                    _xoaSoundDialog(context, index);
+                                  },
+                                  icon: const Icon(
+                                      Icons.delete
+                                  ),
                                 ),
                               ],
                             ),
@@ -283,7 +278,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
     Source path = UrlSource(url);
     await audioPlayer.play(path);
     setState(() {
-      k = const Duration(seconds: 500);
+      k = const Duration(seconds: 3000);
       c = index;
       isPlaying = true;
     });
@@ -398,14 +393,14 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
         builder: (context) {
           return AlertDialog(
             content: Scrollbar(
-              child: Container(
+              child: SizedBox(
                 height: 300,
                 child: Column(
                   children: [
                     Text('Tác giả: ${listItem[index].tacGia}' ),
                     Text('Thời gian: ${listItem[index].thoiGian}'),
                     Text('Tên: ${listItem[index].name}'),
-                    Container(
+                    SizedBox(
                       height: 200,
                       child: Image.network(
                         listItem[index].linkAnh.toString(),
