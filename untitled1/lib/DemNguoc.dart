@@ -11,7 +11,7 @@ class DemNguoc extends StatefulWidget {
 
 class _DongHo extends State<DemNguoc> {
   Duration? thoiGian = Duration.zero;
-  int? gio = 0, phut = 0, giay = 0;
+  int gio = 0, phut = 0, giay = 0;
   late Timer timer;
   bool a = false;
 
@@ -34,7 +34,7 @@ class _DongHo extends State<DemNguoc> {
                   child: CupertinoPicker(
                     itemExtent: 40,
                     scrollController: FixedExtentScrollController(
-                      initialItem: 12,
+                      initialItem: 0,
                     ),
                     children: [
                       for(int i = 0; i< 24; i++)
@@ -58,7 +58,7 @@ class _DongHo extends State<DemNguoc> {
                   child: CupertinoPicker(
                     itemExtent: 40,
                     scrollController: FixedExtentScrollController(
-                      initialItem: 30,
+                      initialItem: 0,
                     ),
                     children: [
                       for(int i = 0; i< 60; i++)
@@ -83,7 +83,7 @@ class _DongHo extends State<DemNguoc> {
                   child: CupertinoPicker(
                     itemExtent: 40,
                     scrollController: FixedExtentScrollController(
-                      initialItem: 30,
+                      initialItem: 0,
                     ),
                     children: [
                       for(int i = 0; i< 60; i++)
