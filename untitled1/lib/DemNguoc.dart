@@ -13,6 +13,7 @@ class _DongHo extends State<DemNguoc> {
   Duration? thoiGian = Duration.zero;
   int? gio = 0, phut = 0, giay = 0;
   late Timer timer;
+  bool a = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class _DongHo extends State<DemNguoc> {
                   child: CupertinoPicker(
                     itemExtent: 40,
                     scrollController: FixedExtentScrollController(
-                      initialItem: 2,
+                      initialItem: 12,
                     ),
                     children: [
                       for(int i = 0; i< 24; i++)
@@ -57,7 +58,7 @@ class _DongHo extends State<DemNguoc> {
                   child: CupertinoPicker(
                     itemExtent: 40,
                     scrollController: FixedExtentScrollController(
-                      initialItem: 1,
+                      initialItem: 30,
                     ),
                     children: [
                       for(int i = 0; i< 60; i++)
@@ -82,7 +83,7 @@ class _DongHo extends State<DemNguoc> {
                   child: CupertinoPicker(
                     itemExtent: 40,
                     scrollController: FixedExtentScrollController(
-                      initialItem: 0,
+                      initialItem: 30,
                     ),
                     children: [
                       for(int i = 0; i< 60; i++)
@@ -106,16 +107,52 @@ class _DongHo extends State<DemNguoc> {
             const SizedBox(
               height: 30,
             ),
-            ElevatedButton(
-                onPressed: () {
-                  demNguoc();
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.black, // Background color
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      demNguoc();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.cyan, // Background color
+                    ),
+                    child: const Text('Chạy',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    )
                 ),
-                child: const Text('Nhập thời gian: ',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                )
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        if(!a){
+                          timer.cancel();
+                          a = true;
+                        }
+                        else{
+                          timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+                            setState(() {
+                              if (thoiGian!.inSeconds > 0) {
+                                thoiGian = (thoiGian! - const Duration(seconds: 1));
+                              } else {
+                                timer.cancel();
+                              }
+                              a = false;
+                            });
+                          });
+                        }
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.cyan, // Background color
+                    ),
+                    child: !a? const Text('Dừng',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ):
+                    const Text('Tiếp tục',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    )
+                ),
+              ],
             ),
             const SizedBox(
               height: 30,
