@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class DemNguoc extends StatefulWidget {
   const DemNguoc({super.key});
@@ -22,76 +23,80 @@ class _DongHo extends State<DemNguoc> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                DropdownButton<int>(
-                  menuMaxHeight: 200,
-                  dropdownColor: Colors.black,
-                  alignment: Alignment.center,
-                  items: [
-                    for(int i = 0; i< 24; i++)
-                      DropdownMenuItem<int>(
-                        value: i,
-                        child: Text(i.toInt().toString(),
-                          style: const TextStyle(fontSize: 25, color: Colors.red),
-                        ),
-                      ),
-                  ],
-                  onChanged: (int? newValue) {
-                    setState(() {
-                      gio = newValue;
-                    });
-                  },
-                  value: gio,
+                Container(
+                  height: 300,
+                  width: 80,
+                  child: CupertinoPicker(
+                    itemExtent: 40,
+                    scrollController: FixedExtentScrollController(
+                      initialItem: 2,
+                    ),
+                    children: [
+                      for(int i = 0; i< 24; i++)
+                        Text(i.toInt().toString(),
+                          style: const TextStyle(fontSize: 35, color: Colors.amber),
+                        )
+                    ],
+                    onSelectedItemChanged: (int value){
+                      setState(() {
+                        gio = value;
+                      });
+                    },
+                  ),
                 ),
                 const Text('Giờ',
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
-                DropdownButton<int>(
-                  menuMaxHeight: 200,
-                  dropdownColor: Colors.black,
-                  alignment: Alignment.center,
-                  items: [
-                    for(int i = 0; i< 60; i++)
-                      DropdownMenuItem<int>(
-                        value: i,
-                        child: Text(i.toInt().toString(),
-                          selectionColor: Colors.black,
-                          style: const TextStyle(fontSize: 25, color: Colors.red),
-                        ),
-                      ),
-                  ],
-                  onChanged: (int? newValue) {
-                    setState(() {
-                      phut = newValue;
-                    });
-                  },
-                  value: phut,
+                Container(
+                  height: 300,
+                  width: 80,
+                  child: CupertinoPicker(
+                    itemExtent: 40,
+                    scrollController: FixedExtentScrollController(
+                      initialItem: 1,
+                    ),
+                    children: [
+                      for(int i = 0; i< 60; i++)
+                        Text(i.toInt().toString(),
+                          style: const TextStyle(fontSize: 35, color: Colors.amber),
+                        )
+                    ],
+                    onSelectedItemChanged: (int value){
+                      setState(() {
+                        phut = value;
+                      });
+
+                    },
+                  ),
                 ),
                 const Text('Phút',
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
-                DropdownButton<int>(
-                  menuMaxHeight: 200,
-                  dropdownColor: Colors.black,
-                  alignment: Alignment.center,
-                  items: [
-                    for(int i = 0; i< 60; i++)
-                      DropdownMenuItem<int>(
-                        value: i,
-                        child: Text(i.toInt().toString(),
-                          selectionColor: Colors.black,
-                          style: const TextStyle(fontSize: 25, color: Colors.red),
+                Container(
+                  height: 300,
+                  width: 40,
+                  child: CupertinoPicker(
+                    itemExtent: 40,
+                    scrollController: FixedExtentScrollController(
+                      initialItem: 0,
+                    ),
+                    children: [
+                      for(int i = 0; i< 60; i++)
+                        Text(i.toInt().toString(),
+                          style: const TextStyle(fontSize: 35, color: Colors.amber),
                         ),
-                      ),
-                  ],
-                  onChanged: (int? newValue) {
-                    setState(() {
-                      giay = newValue;
-                    });
-                  },
-                  value: giay,
+                    ],
+                    onSelectedItemChanged: (int value){
+                      setState(() {
+                        giay = value;
+                      });
+
+                    },
+                  ),
                 ),
                 const Text('Giây',
                   style: TextStyle(fontSize: 20, color: Colors.white),
