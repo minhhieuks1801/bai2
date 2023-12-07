@@ -37,9 +37,13 @@ class _ghiChu2 extends State<ghiChuImg> {
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Row(
               children: [
-                ElevatedButton(
+                IconButton(
                   onPressed: _layAnh,
-                  child: const Text('Lấy ảnh'),
+                  iconSize: 60,
+                  color: Colors.red,
+                  icon: const Icon(
+                      Icons.add
+                  ),
                 ),
                 if (_imageBytes != null && !delateSave == false)
                   Row(
@@ -53,9 +57,22 @@ class _ghiChu2 extends State<ghiChuImg> {
                       const SizedBox(
                         width: 10,
                       ),
-                      ElevatedButton(
-                        onPressed: _luuAnh,
-                        child: const Text('Lưu'),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            onPressed: _luuAnh,
+                            child: const Text('Lưu'),
+                          ),
+                          ElevatedButton(
+                            onPressed: (){
+                              setState(() {
+                                delateSave = false;
+                              });
+                            },
+                            child: const Text('Hủy'),
+                          ),
+                        ],
                       )
                     ],
                   ),
@@ -92,25 +109,25 @@ class _ghiChu2 extends State<ghiChuImg> {
                                   listAnh[index].name.toString().substring(
                                       0, listAnh[index].name.toString().length - 4),
                                   style: const TextStyle(
-                                      fontSize: 15, color: Colors.red),
+                                      fontSize: 20, color: Colors.red),
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                ElevatedButton(
+                                IconButton(
                                   onPressed:(){
                                     _xemImgDialog(context, listAnh[index].link.toString());
                                   },
-                                  child: const Text('Xem ảnh'),
+                                  iconSize: 32,
+                                  icon: const Icon(
+                                      Icons.visibility
+                                  ),
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                ElevatedButton(
+                                IconButton(
                                   onPressed:(){
                                     _xoaImgDialog(context, index);
                                   },
-                                  child: const Text('Xóa ảnh'),
+                                  iconSize: 32,
+                                  icon: const Icon(
+                                      Icons.delete
+                                  ),
                                 ),
                               ],
                             ),
