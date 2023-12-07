@@ -208,7 +208,10 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
                                       link = listItem[index].linkAnh.toString();
                                       isPlaying = true;
                                       moNhac = true;
-                                      k = const Duration(seconds: 500);
+                                      setState(() {
+                                        k = const Duration(seconds: 500);
+                                      });
+
                                     },
                                     child: const Text('Nghe')
                                 ),
@@ -280,6 +283,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
     Source path = UrlSource(url);
     await audioPlayer.play(path);
     setState(() {
+      k = const Duration(seconds: 500);
       c = index;
       isPlaying = true;
     });
