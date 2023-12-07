@@ -9,71 +9,108 @@ class DemNguoc extends StatefulWidget {
 }
 
 class _DongHo extends State<DemNguoc> {
-  double? htPhut = 0, htGiay = 0;
-  double? a1 = 0, a2 = 0;
-  final TextEditingController phutController = TextEditingController();
-  final TextEditingController giayController = TextEditingController();
+  Duration? thoiGian = Duration.zero;
+  int? gio = 0, phut = 0, giay = 0;
   late Timer timer;
-  bool check = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(title: const Text('Đếm ngược')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ElevatedButton(
-                    onPressed: () {
-                      demNguoc();
-                    },
-                    child: Text('Nhập thời gian: ')
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                DropdownButton<double>(
-                  menuMaxHeight: 100,
+                DropdownButton<int>(
+                  menuMaxHeight: 200,
+                  dropdownColor: Colors.black,
+                  alignment: Alignment.center,
                   items: [
-                    for(double i = 0; i< 60; i++)
-                      DropdownMenuItem<double>(
+                    for(int i = 0; i< 24; i++)
+                      DropdownMenuItem<int>(
                         value: i,
                         child: Text(i.toInt().toString(),
-                          style: const TextStyle(fontSize: 20, color: Colors.black),),
+                          style: const TextStyle(fontSize: 25, color: Colors.red),
+                        ),
                       ),
                   ],
-                  onChanged: (double? newValue) {
+                  onChanged: (int? newValue) {
                     setState(() {
-                      a1 = newValue;
+                      gio = newValue;
                     });
                   },
-                  value: a1,
+                  value: gio,
                 ),
-                const SizedBox(
-                  width: 10,
+                const Text('Giờ',
+                  style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
-                DropdownButton<double>(
-                  menuMaxHeight: 100,
+                DropdownButton<int>(
+                  menuMaxHeight: 200,
+                  dropdownColor: Colors.black,
+                  alignment: Alignment.center,
                   items: [
-                    for(double i = 0; i< 60; i++)
-                      DropdownMenuItem<double>(
+                    for(int i = 0; i< 60; i++)
+                      DropdownMenuItem<int>(
                         value: i,
                         child: Text(i.toInt().toString(),
-                          style: const TextStyle(fontSize: 20, color: Colors.black),),
+                          selectionColor: Colors.black,
+                          style: const TextStyle(fontSize: 25, color: Colors.red),
+                        ),
                       ),
                   ],
-                  onChanged: (double? newValue) {
+                  onChanged: (int? newValue) {
                     setState(() {
-                      a2 = newValue;
+                      phut = newValue;
                     });
                   },
-                  value: a2,
+                  value: phut,
+                ),
+                const Text('Phút',
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+                DropdownButton<int>(
+                  menuMaxHeight: 200,
+                  dropdownColor: Colors.black,
+                  alignment: Alignment.center,
+                  items: [
+                    for(int i = 0; i< 60; i++)
+                      DropdownMenuItem<int>(
+                        value: i,
+                        child: Text(i.toInt().toString(),
+                          selectionColor: Colors.black,
+                          style: const TextStyle(fontSize: 25, color: Colors.red),
+                        ),
+                      ),
+                  ],
+                  onChanged: (int? newValue) {
+                    setState(() {
+                      giay = newValue;
+                    });
+                  },
+                  value: giay,
+                ),
+                const Text('Giây',
+                  style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  demNguoc();
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.black, // Background color
+                ),
+                child: const Text('Nhập thời gian: ',
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                )
             ),
             const SizedBox(
               height: 30,
@@ -81,16 +118,8 @@ class _DongHo extends State<DemNguoc> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Đếm '),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(htPhut!.toInt().toString(),
-                  style: const TextStyle(fontSize: 30, color: Colors.black),
-                ),
-                const Text(' : '),
-                Text(htGiay!.toInt().toString(),
-                  style: const TextStyle(fontSize: 30, color: Colors.black),
+                Text(formatTime(thoiGian!),
+                  style: const TextStyle(fontSize: 50, color: Colors.white),
                 ),
               ],
             ),
@@ -100,19 +129,26 @@ class _DongHo extends State<DemNguoc> {
     );
   }
 
+  String formatTime(Duration duration){
+    String twoDigits (int n) => n.toString().padLeft(2, '0');
+    String H = twoDigits(duration.inHours);
+    String M = twoDigits(duration.inMinutes.remainder(60));
+    String S = twoDigits(duration.inSeconds.remainder(60));
+    return [if(duration.inHours > 0 )
+      H, M, S].join(':');
+  }
+
   void demNguoc() {
-    double thoigianGiay = (a1!*60 + a2!);
-    const oneSecond = Duration(seconds: 1);
-    timer = Timer.periodic(oneSecond, (Timer timer) {
-      if (thoigianGiay == 0) {
-        timer.cancel();
-      } else {
-        setState(() {
-          thoigianGiay--;
-          htPhut = thoigianGiay/60;
-          htGiay = thoigianGiay%60;
-        });
-      }
+    int s = gio!* 3600 +phut!*60 + giay!;
+    thoiGian = Duration(seconds: s);
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (thoiGian!.inSeconds > 0) {
+          thoiGian = (thoiGian! - const Duration(seconds: 1));
+        } else {
+          timer.cancel();
+        }
+      });
     });
   }
 }

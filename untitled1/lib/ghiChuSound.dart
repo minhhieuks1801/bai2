@@ -273,24 +273,24 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
   Future<void> layFileFireBase(String tenAnh) async{
     Reference ref = FirebaseStorage.instance.ref().child(tenAnh);
     String url = await ref.getDownloadURL();
-    listItem.forEach((sound) {
+    for (var sound in listItem) {
       if(sound.name == tenAnh){
         setState(() {
           sound.link = url;
         });
       }
-    });
+    }
   }
   Future<void> layAnhFireBase(String tenAnh) async{
     Reference ref = FirebaseStorage.instance.ref().child(tenAnh);
     String url = await ref.getDownloadURL();
-    listItem.forEach((s) {
+    for (var s in listItem) {
       if(s.image == tenAnh){
         setState(() {
           s.linkAnh = url;
         });
       }
-    });
+    }
   }
 
   Future<void> _xoaAnh(int index) async {
