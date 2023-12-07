@@ -248,20 +248,21 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    _ThemTacVuDialog(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.greenAccent, // Background color
-                  ),
-                  child: const Text('Thêm tác vụ',
-                    style: TextStyle(fontSize: 20, color: Colors.black),
-                  ),
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    IconButton(
+                      onPressed: () {
+                        _ThemTacVuDialog(context);
+                      },
+                      iconSize: 30,
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red, // Background color
+                      ),
+                      icon: const Icon(
+                          Icons.add
+                      ),
+                    ),
                     ElevatedButton(
                       onPressed: () {
                         _hienThiTacVu();

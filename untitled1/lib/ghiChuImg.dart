@@ -41,6 +41,9 @@ class _ghiChu2 extends State<ghiChuImg> {
                   onPressed: _layAnh,
                   iconSize: 60,
                   color: Colors.red,
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.black, // Background color
+                  ),
                   icon: const Icon(
                       Icons.add
                   ),
