@@ -19,7 +19,7 @@ class ghiChuSound extends StatefulWidget{
 }
 
 class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
-  int? a = 0, b = 0;
+  int? a = 0, b = 0, c;
   late Record audioRecord;
   late AudioPlayer audioPlayer;
   bool isRecording = false;
@@ -51,6 +51,14 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
       setState(() {
         position = newPosition;
       });
+    });
+    audioPlayer.onPlayerComplete.listen((event) {
+      if (c! < listItem.length - 1) {
+        playRecording(c! + 1);
+        setState(() {
+          link = listItem[c! + 1].linkAnh.toString();
+        });
+      }
     });
     super.initState();
   }
@@ -98,19 +106,61 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
                   Container(
                     margin: const EdgeInsets.only(left: 20, top: 0, right: 20, bottom: 0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text(formatTime(duration),
-                            style: const TextStyle(fontSize: 25, color: Colors.red)),
                         Text(formatTime(position),
-                            style: const TextStyle(fontSize: 25, color: Colors.red)),
+                            style: const TextStyle(fontSize: 20, color: Colors.white)),
+                        Text('/${formatTime(duration)}',
+                            style: const TextStyle(fontSize: 20, color: Colors.white)),
                       ],
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: (){
-                      isPlaying? audioPlayer.pause() : audioPlayer.resume();
-                    }, child: isPlaying? const Text('Dừng') : const Text('Nghe tiếp'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: (){
+                          if(c! > 0) {
+                            playRecording(c! - 1);
+                            int d = c! - 1;
+                            link = listItem[d].linkAnh.toString();
+                            setState(() {
+                            });
+
+                          }
+                        },
+                        iconSize: 72,
+                        icon: const Icon(
+                            Icons.arrow_left
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: (){
+                          isPlaying? audioPlayer.pause() : audioPlayer.resume();
+                        },
+                          iconSize: 72,
+                        icon: isPlaying? const Icon(
+                            Icons.play_circle
+                        ) : const Icon(
+                            Icons.pause
+                        )
+                      ),
+                      IconButton(
+                        onPressed: (){
+                          if(c! < listItem.length-1) {
+                            playRecording(c! + 1);
+                            setState(() {
+                              link = listItem[c! + 1].linkAnh.toString();
+                            });
+
+                          }
+                        },
+                        iconSize: 72,
+                        icon: const Icon(
+                            Icons.arrow_right
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ) :
@@ -229,7 +279,10 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
     String url = await ref.getDownloadURL();
     Source path = UrlSource(url);
     await audioPlayer.play(path);
-    setState(() {});
+    setState(() {
+      c = index;
+      isPlaying = true;
+    });
   }
   Future<void> pauseRecording() async {
     audioPlayer.pause();
