@@ -184,9 +184,11 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
                 const SizedBox(
                   height: 30,
                 ),
-              ElevatedButton(
+              IconButton(
+                  iconSize: 72,
+                  color: !isRecording? Colors.white: Colors.red,
                   onPressed: !isRecording ? startRecording: stopRecording,
-                  child: !isRecording ? const Text('Bắt đầu ghi âm') : const Text('Dừng ghi âm')
+                  icon: !isRecording ? const Icon(Icons.mic) : const Icon(Icons.radio_button_checked)
               ),
               const SizedBox(
                 height: 10,
