@@ -31,9 +31,9 @@ class _DongHo extends State<DemNguoc> {
                 children: [
                   Container(
                     height: 300,
-                    width: 80,
+                    width: 40,
                     child: CupertinoPicker(
-                      itemExtent: 40,
+                      itemExtent: 60,
                       scrollController: FixedExtentScrollController(
                         initialItem: 0,
                       ),
@@ -51,13 +51,13 @@ class _DongHo extends State<DemNguoc> {
                     ),
                   ),
                   const Text('Giờ',
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    style: TextStyle(fontSize: 25, color: Colors.white),
                   ),
                   Container(
                     height: 300,
-                    width: 80,
+                    width: 40,
                     child: CupertinoPicker(
-                      itemExtent: 40,
+                      itemExtent: 60,
                       scrollController: FixedExtentScrollController(
                         initialItem: 0,
                       ),
@@ -76,13 +76,13 @@ class _DongHo extends State<DemNguoc> {
                     ),
                   ),
                   const Text('Phút',
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    style: TextStyle(fontSize: 25, color: Colors.white),
                   ),
                   Container(
                     height: 300,
                     width: 40,
                     child: CupertinoPicker(
-                      itemExtent: 40,
+                      itemExtent: 60,
                       scrollController: FixedExtentScrollController(
                         initialItem: 0,
                       ),
@@ -101,7 +101,7 @@ class _DongHo extends State<DemNguoc> {
                     ),
                   ),
                   const Text('Giây',
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    style: TextStyle(fontSize: 25, color: Colors.white),
                   ),
                 ],
               ),
