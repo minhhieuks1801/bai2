@@ -69,179 +69,198 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
       backgroundColor: Colors.white60,
       appBar: AppBar(title: const Text('Ghi âm')),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            moNhac?
-              Column(
-                children: [
-                  RotationTransition(
-                    turns: _animation,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ClipOval(
-                        child: Image.network(
-                          fit: BoxFit.fill,
-                          link,
-                          height: 300,
-                          width: 300,
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment(0.8, 1),
+              colors: <Color>[
+                Color(0xff1f005c),
+                Color(0xff5b0060),
+                Color(0xff870160),
+                Color(0xffac255e),
+                Color(0xffca485c),
+                Color(0xffe16b5c),
+                Color(0xfff39060),
+                Color(0xffffb56b),
+              ],
+              tileMode: TileMode.mirror,
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              moNhac?
+                Column(
+                  children: [
+                    RotationTransition(
+                      turns: _animation,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipOval(
+                          child: Image.network(
+                            fit: BoxFit.fill,
+                            link,
+                            height: 300,
+                            width: 300,
 
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 15, top: 0, right: 15, bottom: 0),
-                    child: Slider(
-                      min: 0,
-                      max: duration.inSeconds.toDouble(),
-                      value: position.inSeconds.toDouble(),
-                      onChanged: (value) async {
-                        final position = Duration(seconds: value.toInt());
-                        await audioPlayer.seek(position);
-                        await audioPlayer.resume();
-                      },
+                    Container(
+                      margin: const EdgeInsets.only(left: 15, top: 0, right: 15, bottom: 0),
+                      child: Slider(
+                        min: 0,
+                        max: duration.inSeconds.toDouble(),
+                        value: position.inSeconds.toDouble(),
+                        onChanged: (value) async {
+                          final position = Duration(seconds: value.toInt());
+                          await audioPlayer.seek(position);
+                          await audioPlayer.resume();
+                        },
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 20, top: 0, right: 20, bottom: 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, top: 0, right: 20, bottom: 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(formatTime(position),
+                              style: const TextStyle(fontSize: 20, color: Colors.white)),
+                          Text('/${formatTime(duration)}',
+                              style: const TextStyle(fontSize: 20, color: Colors.white)),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(formatTime(position),
-                            style: const TextStyle(fontSize: 20, color: Colors.white)),
-                        Text('/${formatTime(duration)}',
-                            style: const TextStyle(fontSize: 20, color: Colors.white)),
+                        IconButton(
+                          onPressed: (){
+                            if(c! > 0) {
+                              playRecording(c! - 1);
+                              int d = c! - 1;
+                              link = listItem[d].linkAnh.toString();
+                              setState(() {
+                              });
+                            }
+                          },
+                          iconSize: 72,
+                          icon: const Icon(
+                              Icons.arrow_left
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: (){
+                            isPlaying? audioPlayer.pause() : audioPlayer.resume();
+                          },
+                            iconSize: 72,
+                          icon: isPlaying? const Icon(
+                              Icons.play_circle
+                          ) : const Icon(
+                              Icons.pause
+                          )
+                        ),
+                        IconButton(
+                          onPressed: (){
+                            if(c! < listItem.length-1) {
+                              playRecording(c! + 1);
+                              setState(() {
+                                link = listItem[c! + 1].linkAnh.toString();
+                              });
+
+                            }
+                          },
+                          iconSize: 72,
+                          icon: const Icon(
+                              Icons.arrow_right
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: (){
-                          if(c! > 0) {
-                            playRecording(c! - 1);
-                            int d = c! - 1;
-                            link = listItem[d].linkAnh.toString();
-                            setState(() {
-                            });
-                          }
-                        },
-                        iconSize: 72,
-                        icon: const Icon(
-                            Icons.arrow_left
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: (){
-                          isPlaying? audioPlayer.pause() : audioPlayer.resume();
-                        },
-                          iconSize: 72,
-                        icon: isPlaying? const Icon(
-                            Icons.play_circle
-                        ) : const Icon(
-                            Icons.pause
-                        )
-                      ),
-                      IconButton(
-                        onPressed: (){
-                          if(c! < listItem.length-1) {
-                            playRecording(c! + 1);
-                            setState(() {
-                              link = listItem[c! + 1].linkAnh.toString();
-                            });
-
-                          }
-                        },
-                        iconSize: 72,
-                        icon: const Icon(
-                            Icons.arrow_right
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ) :
-              const SizedBox(
-                height: 30,
-              ),
-            ElevatedButton(
-                onPressed: !isRecording ? startRecording: stopRecording,
-                child: !isRecording ? const Text('Bắt đầu ghi âm') : const Text('Dừng ghi âm')
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            if(!isRecording && audioPath != null)
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: listItem.length,
-                    itemBuilder: (BuildContext context, int index){
-                      return Container(
-                        margin: const EdgeInsets.all(10.0),
-                        padding: const EdgeInsets.only(left: 15, top: 4, right: 0, bottom: 4),
-                        decoration: BoxDecoration(
-                          color: const Color(0xffF4E869),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width: MediaQuery
-                                      .of(context)
-                                      .size
-                                      .width * 0.5,
-                                  child: Text(listItem[index].name.toString().substring(
-                                      0, listItem[index].name.toString().length - 4),
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(fontSize: 20, color: Colors.black)
-                                  ),
-                                ),
-                                IconButton(
-                                    onPressed: (){
-                                      playRecording(index);
-                                      link = listItem[index].linkAnh.toString();
-                                      isPlaying = true;
-                                      moNhac = true;
-                                      setState(() {
-                                        k = const Duration(seconds: 500);
-                                      });
-                                    },
-                                  icon: const Icon(
-                                      Icons.play_circle
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: (){
-                                    _XemThongTinSoundDialog(context, index);
-                                  },
-                                  icon: const Icon(
-                                      Icons.visibility
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed:(){
-                                    _xoaSoundDialog(context, index);
-                                  },
-                                  icon: const Icon(
-                                      Icons.delete
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
-                    }
+                  ],
+                ) :
+                const SizedBox(
+                  height: 30,
                 ),
+              ElevatedButton(
+                  onPressed: !isRecording ? startRecording: stopRecording,
+                  child: !isRecording ? const Text('Bắt đầu ghi âm') : const Text('Dừng ghi âm')
               ),
-          ],
+              const SizedBox(
+                height: 10,
+              ),
+              if(!isRecording && audioPath != null)
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: listItem.length,
+                      itemBuilder: (BuildContext context, int index){
+                        return Container(
+                          margin: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.only(left: 15, top: 4, right: 0, bottom: 4),
+                          decoration: BoxDecoration(
+                            color: const Color(0xffF4E869),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width * 0.5,
+                                    child: Text(listItem[index].name.toString().substring(
+                                        0, listItem[index].name.toString().length - 4),
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(fontSize: 20, color: Colors.black)
+                                    ),
+                                  ),
+                                  IconButton(
+                                      onPressed: (){
+                                        playRecording(index);
+                                        link = listItem[index].linkAnh.toString();
+                                        isPlaying = true;
+                                        moNhac = true;
+                                        setState(() {
+                                          k = const Duration(seconds: 500);
+                                        });
+                                      },
+                                    icon: const Icon(
+                                        Icons.play_circle
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: (){
+                                      _XemThongTinSoundDialog(context, index);
+                                    },
+                                    icon: const Icon(
+                                        Icons.visibility
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed:(){
+                                      _xoaSoundDialog(context, index);
+                                    },
+                                    icon: const Icon(
+                                        Icons.delete
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
