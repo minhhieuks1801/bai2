@@ -14,6 +14,7 @@ class _DongHo extends State<DemNguoc> {
   int gio = 0, phut = 0, giay = 0;
   late Timer timer;
   bool a = false;
+  bool b = true;
 
   @override
   Widget build(BuildContext context) {
@@ -24,86 +25,86 @@ class _DongHo extends State<DemNguoc> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  height: 300,
-                  width: 80,
-                  child: CupertinoPicker(
-                    itemExtent: 40,
-                    scrollController: FixedExtentScrollController(
-                      initialItem: 0,
+            if(b)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    height: 300,
+                    width: 80,
+                    child: CupertinoPicker(
+                      itemExtent: 40,
+                      scrollController: FixedExtentScrollController(
+                        initialItem: 0,
+                      ),
+                      children: [
+                        for(int i = 0; i< 24; i++)
+                          Text(i.toInt().toString(),
+                            style: const TextStyle(fontSize: 35, color: Colors.amber),
+                          )
+                      ],
+                      onSelectedItemChanged: (int value){
+                        setState(() {
+                          gio = value;
+                        });
+                      },
                     ),
-                    children: [
-                      for(int i = 0; i< 24; i++)
-                        Text(i.toInt().toString(),
-                          style: const TextStyle(fontSize: 35, color: Colors.amber),
-                        )
-                    ],
-                    onSelectedItemChanged: (int value){
-                      setState(() {
-                        gio = value;
-                      });
-                    },
                   ),
-                ),
-                const Text('Giờ',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-                Container(
-                  height: 300,
-                  width: 80,
-                  child: CupertinoPicker(
-                    itemExtent: 40,
-                    scrollController: FixedExtentScrollController(
-                      initialItem: 0,
-                    ),
-                    children: [
-                      for(int i = 0; i< 60; i++)
-                        Text(i.toInt().toString(),
-                          style: const TextStyle(fontSize: 35, color: Colors.amber),
-                        )
-                    ],
-                    onSelectedItemChanged: (int value){
-                      setState(() {
-                        phut = value;
-                      });
+                  const Text('Giờ',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                  Container(
+                    height: 300,
+                    width: 80,
+                    child: CupertinoPicker(
+                      itemExtent: 40,
+                      scrollController: FixedExtentScrollController(
+                        initialItem: 0,
+                      ),
+                      children: [
+                        for(int i = 0; i< 60; i++)
+                          Text(i.toInt().toString(),
+                            style: const TextStyle(fontSize: 35, color: Colors.amber),
+                          )
+                      ],
+                      onSelectedItemChanged: (int value){
+                        setState(() {
+                          phut = value;
+                        });
 
-                    },
-                  ),
-                ),
-                const Text('Phút',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-                Container(
-                  height: 300,
-                  width: 40,
-                  child: CupertinoPicker(
-                    itemExtent: 40,
-                    scrollController: FixedExtentScrollController(
-                      initialItem: 0,
+                      },
                     ),
-                    children: [
-                      for(int i = 0; i< 60; i++)
-                        Text(i.toInt().toString(),
-                          style: const TextStyle(fontSize: 35, color: Colors.amber),
-                        ),
-                    ],
-                    onSelectedItemChanged: (int value){
-                      setState(() {
-                        giay = value;
-                      });
-
-                    },
                   ),
-                ),
-                const Text('Giây',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                ),
-              ],
-            ),
+                  const Text('Phút',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                  Container(
+                    height: 300,
+                    width: 40,
+                    child: CupertinoPicker(
+                      itemExtent: 40,
+                      scrollController: FixedExtentScrollController(
+                        initialItem: 0,
+                      ),
+                      children: [
+                        for(int i = 0; i< 60; i++)
+                          Text(i.toInt().toString(),
+                            style: const TextStyle(fontSize: 35, color: Colors.amber),
+                          ),
+                      ],
+                      onSelectedItemChanged: (int value){
+                        setState(() {
+                          giay = value;
+                        });
+
+                      },
+                    ),
+                  ),
+                  const Text('Giây',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                ],
+              ),
             const SizedBox(
               height: 30,
             ),
@@ -112,12 +113,23 @@ class _DongHo extends State<DemNguoc> {
               children: [
                 ElevatedButton(
                     onPressed: () {
-                      demNguoc();
+                      if(b) {
+                        demNguoc();
+                        b = false;
+                      } else{
+                        setState(() {
+                          b = true;
+                          thoiGian = Duration.zero;
+                        });
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.cyan, // Background color
                     ),
-                    child: const Text('Chạy',
+                    child: b? const Text('Chạy',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ):
+                    const Text('Hủy',
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     )
                 ),
