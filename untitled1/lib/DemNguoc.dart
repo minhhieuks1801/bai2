@@ -181,8 +181,7 @@ class _DongHo extends State<DemNguoc> {
   }
 
   void demNguoc() {
-    int s = gio* 3600 +phut*60 + giay;
-    thoiGian = Duration(seconds: s);
+    thoiGian = Duration(seconds: giay, minutes: phut, hours: gio);
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (thoiGian.inSeconds > 0) {
