@@ -140,7 +140,7 @@ class _DongHo extends State<DemNguoc> {
     String M = twoDigits(duration.inMinutes.remainder(60));
     String S = twoDigits(duration.inSeconds.remainder(60));
     return [if(duration.inHours > 0 )
-      H, M, S].join(':');
+                H, M, S].join(':');
   }
 
   void demNguoc() {
