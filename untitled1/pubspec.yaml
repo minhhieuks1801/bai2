@@ -29,18 +29,21 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   image_picker: ^1.0.4
-  firebase_storage: ^11.5.2
   path_provider: ^2.1.1
-  firebase_core: ^2.23.0
-  firebase_database: ^10.2.5
-  just_audio: ^0.9.34
-  flutter_sound: ^9.2.13
-  audioplayers: ^5.2.1
-  record: ^4.4.4
   http: ^1.1.2
   geocoding: ^2.1.1
   path: ^1.8.3
   provider: ^6.1.1
+  # audio
+  just_audio: ^0.9.34
+  record: ^4.4.4
+  flutter_sound: ^9.2.13
+  audioplayers: ^5.2.1
+  # firebase
+  firebase_core: ^2.23.0
+  firebase_database: ^10.2.5
+  firebase_storage: ^11.5.2
+
   flutter:
     sdk: flutter
 
