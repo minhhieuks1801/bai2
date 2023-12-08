@@ -9,9 +9,9 @@ class Img {
 
    Img copyWith({String? key, String? name, String? link}) {
      return Img(
-       key: key ?? this.key,
-       name: name ?? this.name,
-       link: link ?? this.link,
+       key: key,
+       name: name,
+       link: link,
      );
    }
 

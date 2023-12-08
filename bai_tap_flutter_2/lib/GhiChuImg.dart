@@ -186,6 +186,7 @@ class GhiChuState extends State<GhiChuImg> {
       refAnh.onValue.listen((event) {
         Map<dynamic, dynamic> values = event.snapshot.value as Map<dynamic, dynamic>;
         listAnh1.clear();
+        listAnh.clear();
         values.forEach((key, item) {
           setState(() {
             listAnh1.add(Img(key: key, name: item['name'].toString(), link: ''));
@@ -204,10 +205,9 @@ class GhiChuState extends State<GhiChuImg> {
     String url = await ref.getDownloadURL();
     setState(() {
       listAnh1.where((img) => img.name == tenAnh).forEach((img) {
-        listAnh.add(img.copyWith(link: url));
+        listAnh.add(img.copyWith(key: img.key,link: url, name: img.name));
       });
     });
-    listAnh;
     //listAnh.where((s) => s.name == tenAnh).map((img) => img.copyWith(link: url)).toList();
 
   }

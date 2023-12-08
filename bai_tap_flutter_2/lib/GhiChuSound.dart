@@ -24,7 +24,7 @@ class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin 
   late AudioPlayer audioPlayer;
   bool isRecording = false;
   String? audioPath = '';
-  List<Sound> listItem = [];
+  List<Sound> listItem = [], listItem1 = [];
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
@@ -313,7 +313,7 @@ class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin 
     String name = DateTime.now().toString().split('.')[0];
     try {
       Reference storageReference = FirebaseStorage.instance.ref().child('$name.M4A');
-      Sound i = Sound(name, '$name.M4A', '', '', 'Nguyễn Minh Hiệu', 'khỉ đá 2.PNG', name);
+      Sound i = Sound(key: '', name: '$name.M4A', link: '', linkAnh: '', tacGia: 'Nguyễn Minh Hiệu', image: 'khỉ đá 2.PNG', thoiGian: name);
       DatabaseReference postListRef = FirebaseDatabase.instance.reference();
       postListRef.child('Sound').push().set(i.toJson());
       // Tải lên là tệp M4a
@@ -330,12 +330,12 @@ class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin 
       Query refAnh = FirebaseDatabase.instance.ref('Sound').orderByChild('name');
       refAnh.onValue.listen((event) {
         Map<dynamic, dynamic> values = event.snapshot.value as Map<dynamic, dynamic>;
+        listItem1.clear();
         listItem.clear();
         values.forEach((key, item) {
           setState(() {
-            listItem.add(Sound(key, item['name'].toString(), '', '', item['tacGia'].toString(), item['image'].toString(), item['thoiGian'].toString()));
-            layFileFireBase(item['name'].toString());
-            layAnhFireBase(item['image'].toString());
+            listItem1.add(Sound(key: key, name: item['name'].toString(), link: '', linkAnh: '', tacGia: item['tacGia'].toString(), image: item['image'].toString(), thoiGian: item['thoiGian'].toString()));
+            layFileFireBase(item['name'].toString(), item['image'].toString());
           });
         });
       }, onError: (error) {
@@ -343,21 +343,14 @@ class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin 
     } catch(e){
     }
   }
-  Future<void> layFileFireBase(String tenfile) async{
+  Future<void> layFileFireBase(String tenfile, String tenAnh) async{
     Reference ref = FirebaseStorage.instance.ref().child(tenfile);
     String url = await ref.getDownloadURL();
-    listItem.where((s) => s.name == tenfile).forEach((s) {
+    Reference refAnh = FirebaseStorage.instance.ref().child(tenAnh);
+    String urlAnh = await refAnh.getDownloadURL();
       setState(() {
-        s.link = url;
-      });
-    });
-  }
-  Future<void> layAnhFireBase(String tenAnh) async{
-    Reference ref = FirebaseStorage.instance.ref().child(tenAnh);
-    String url = await ref.getDownloadURL();
-    listItem.where((s) => s.image == tenAnh).forEach((s) {
-      setState(() {
-        s.linkAnh = url;
+        listItem1.where((s) => s.name == tenfile).forEach((s) {
+          listItem.add(s.copyWith(link: url, linkAnh: urlAnh, key: s.key, name: s.name, thoiGian: s.thoiGian, image: s.image, tacGia: s.tacGia));
       });
     });
   }

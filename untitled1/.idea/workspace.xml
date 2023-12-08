@@ -10,14 +10,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bad6f7f-8714-4b3b-b999-cfc26957ed5c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/GhiChuImg2.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/DemNguoc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/DemNguoc.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/GhiChuImg.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/GhiChuImg.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/GhiChuSound.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/GhiChuSound.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/QuanLyTacVu.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/QuanLyTacVu.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/model/Img.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/model/Img.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/model/Sound.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/model/Sound.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/model/TacVu.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/model/TacVu.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

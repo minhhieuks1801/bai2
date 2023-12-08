@@ -12,7 +12,7 @@ class QuanLyTacVu extends StatefulWidget {
 class QuanLyTacVuState extends State<QuanLyTacVu> {
   final TextEditingController txtTenTask = TextEditingController();
   final TextEditingController txtNoiDungTask = TextEditingController();
-  List<TacVu> listTacVu = [];
+  List<TacVu> listTacVu = [], listTacVu1 = [];
 
   @override
   void initState() {
@@ -30,8 +30,8 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
         listTacVu.clear();
         values.forEach((key, item) {
           setState(() {
-            listTacVu.add(TacVu(key, item['tieuDe'].toString(),
-                item['noiDung'].toString(), item['tinhTrang']));
+            listTacVu.add(TacVu(key: key, tieuDe: item['tieuDe'].toString(),
+                noiDung: item['noiDung'].toString(), tinhTrang: item['tinhTrang']));
           });
         });
       }, onError: (error) {});
@@ -50,8 +50,8 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
         values.forEach((key, item) {
           setState(() {
             if (item['tinhTrang'] == false) {
-              listTacVu.add(TacVu(key, item['tieuDe'].toString(),
-                  item['noiDung'].toString(), item['tinhTrang']));
+              listTacVu.add(TacVu(key: key, tieuDe: item['tieuDe'].toString(),
+                  noiDung: item['noiDung'].toString(), tinhTrang: item['tinhTrang']));
             }
           });
         });
@@ -98,8 +98,8 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
             actions: <Widget>[
               ElevatedButton(
                 onPressed: () {
-                  TacVu t = TacVu('', txtTenTask.text.toString(),
-                      txtNoiDungTask.text.toString(), false);
+                  TacVu t = TacVu(key: '', tieuDe: txtTenTask.text.toString(),
+                      noiDung: txtNoiDungTask.text.toString(), tinhTrang: false);
                   DatabaseReference postListRef =
                       FirebaseDatabase.instance.reference();
                   postListRef.child('TacVu').push().set(t.toJson());
@@ -165,13 +165,16 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
             actions: <Widget>[
               ElevatedButton(
                 onPressed: () {
-                  listTacVu[index].tieuDe = txtSuaTen.text.toString();
-                  listTacVu[index].noiDung = txtSuaNoiDUng.text.toString();
+                  TacVu tv =  listTacVu[index].copyWith(key: listTacVu[index].key,
+                      tinhTrang: listTacVu[index].tinhTrang,
+                      tieuDe: txtSuaTen.text.toString(),
+                      noiDung: txtSuaNoiDUng.text.toString()
+                  );
                   DatabaseReference postListRef =
                       FirebaseDatabase.instance.reference();
                   postListRef
                       .child('TacVu/${listTacVu[index].key}')
-                      .update(listTacVu[index].toJson());
+                      .update(tv.toJson());
                   setState(() {});
                   Navigator.of(context).pop();
                 },
@@ -228,11 +231,13 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
     });
   }
 
-  Future<void> updateFirebase(int index) async {
+  Future<void> updateFirebase(int index, bool a) async {
+    TacVu tv = listTacVu[index].copyWith(tinhTrang: a, tieuDe: listTacVu[index].tieuDe,
+    noiDung: listTacVu[index].noiDung, key: listTacVu[index].key);
     DatabaseReference postListRef = FirebaseDatabase.instance.reference();
     postListRef
-        .child('TacVu/${listTacVu[index].key}')
-        .update(listTacVu[index].toJson());
+        .child('TacVu/${tv.key}')
+        .update(tv.toJson());
   }
 
   @override
@@ -316,11 +321,11 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
                               onChanged: (bool value) {
                                 setState(() {
                                   if (value) {
-                                    listTacVu[index].tinhTrang = true;
-                                    updateFirebase(index);
+                                    bool a = true;
+                                    updateFirebase(index, a);
                                   } else {
-                                    listTacVu[index].tinhTrang = false;
-                                    updateFirebase(index);
+                                    bool a = false;
+                                    updateFirebase(index, a);
                                   }
                                 });
                               },
