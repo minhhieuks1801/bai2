@@ -178,6 +178,4 @@ class XuLyAnh extends Cubit<List<Img>> {
     });
   }
 
-
-
 }

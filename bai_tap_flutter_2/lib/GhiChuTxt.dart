@@ -11,7 +11,7 @@ class GhiChuTxt extends StatefulWidget{
 
 class GhiChuTextState extends State<GhiChuTxt> {
   final TextEditingController txtGhi = TextEditingController();
-  List<Txt> listTxt = [];
+  List<Txt> listTxt = [], listTxt2 = [];
 
   @override
   void initState() {
@@ -101,7 +101,7 @@ class GhiChuTextState extends State<GhiChuTxt> {
                 onPressed: () {
                   Navigator.of(context).pop();
                   String imageName = DateTime.now().toString().split('.')[0];
-                  Txt i = Txt(imageName, txtGhi.text.toString());
+                  Txt i = Txt(key: imageName, name: txtGhi.text.toString());
                   DatabaseReference postListRef = FirebaseDatabase.instance.reference();
                   postListRef.child('Txt').push().set(i.toJson());
                   setState(() {});
@@ -181,7 +181,7 @@ class GhiChuTextState extends State<GhiChuTxt> {
         listTxt.clear();
         values.forEach((key, item) {
           setState(() {
-            listTxt.add(Txt(key, item['name'].toString()));
+            listTxt.add(Txt(key: key, name: item['name'].toString()));
           });
         });
       }, onError: (error) {
