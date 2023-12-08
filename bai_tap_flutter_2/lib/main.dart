@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/DemNguoc.dart';
-import 'package:untitled1/GhiChuImg2.dart';
 import 'package:untitled1/QuanLyTacVu.dart';
 import 'package:untitled1/GhiChuImg.dart';
 import 'package:untitled1/GhiChuTxt.dart';

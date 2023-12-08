@@ -10,7 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bad6f7f-8714-4b3b-b999-cfc26957ed5c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/model/Img.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/model/Img.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,7 +44,7 @@
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
     "io.flutter.reload.alreadyRun": "true",
-    "last_opened_file_path": "C:/Users/minhh/StudioProjects/untitled",
+    "last_opened_file_path": "C:/Users/minhh/StudioProjects/bai_tap_flutter_2",
     "settings.editor.selected.configurable": "AndroidSdkUpdater",
     "show.migrate.to.gradle.popup": "false"
   }
