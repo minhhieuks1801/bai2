@@ -12,13 +12,13 @@ import 'package:audioplayers/audioplayers.dart' show PlayerState;
 
 import 'model/Sound.dart';
 
-class ghiChuSound extends StatefulWidget{
-  const ghiChuSound({super.key});
+class GhiChuSound extends StatefulWidget{
+  const GhiChuSound({super.key});
   @override
-  _ghiChuSound1 createState() => _ghiChuSound1();
+  GhiChuSoundState createState() => GhiChuSoundState();
 }
 
-class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
+class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin {
   int? a = 0, b = 0, c;
   late Record audioRecord;
   late AudioPlayer audioPlayer;
@@ -28,13 +28,13 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
-  String link = 'https://www.voicify.ai/_next/image?url=https%3A%2F%2Fimagecdn.voicify.ai%2Fmodels%2Fd511a649-8b3c-465e-8002-da07c5d024ca.png&w=640&q=100';
+  String link = '';
   bool moNhac = false;
   Duration? k;
 
   @override
   void initState() {
-    _hienThiFile();
+    hienThiFile();
     audioRecord = Record();
     audioPlayer = AudioPlayer();
     audioPlayer.onPlayerStateChanged.listen((state) {
@@ -239,7 +239,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
                                   ),
                                   IconButton(
                                     onPressed: (){
-                                      _XemThongTinSoundDialog(context, index);
+                                      XemThongTinSoundDialog(context, index);
                                     },
                                     icon: const Icon(
                                         Icons.visibility
@@ -247,7 +247,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
                                   ),
                                   IconButton(
                                     onPressed:(){
-                                      _xoaSoundDialog(context, index);
+                                      xoaSoundDialog(context, index);
                                     },
                                     icon: const Icon(
                                         Icons.delete
@@ -325,7 +325,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
       print('Error uploading file: $e');
     }
   }
-  Future<void> _hienThiFile() async {
+  Future<void> hienThiFile() async {
     try {
       Query refAnh = FirebaseDatabase.instance.ref('Sound').orderByChild('name');
       refAnh.onValue.listen((event) {
@@ -366,7 +366,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
     }
   }
 
-  Future<void> _xoaAnh(int index) async {
+  Future<void> xoaAnh(int index) async {
     DatabaseReference deleteFB = FirebaseDatabase.instance.reference().child('Sound/${listItem[index].key}');
     deleteFB.remove();
 
@@ -375,11 +375,11 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
     setState(() {
       listItem.removeAt(index);
       Future.delayed(const Duration(seconds: 2), () {
-        _hienThiFile();
+        hienThiFile();
       });
     });
   }
-  _xoaSoundDialog(BuildContext context, int index) async {
+  xoaSoundDialog(BuildContext context, int index) async {
     return showDialog(
         context: context,
         builder: (context) {
@@ -391,7 +391,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
 
               ElevatedButton(
                 onPressed: () {
-                  _xoaAnh(index);
+                  xoaAnh(index);
                   Navigator.of(context).pop();
                 },
                 child: const Text('Có'),
@@ -408,7 +408,7 @@ class _ghiChuSound1 extends State<ghiChuSound> with TickerProviderStateMixin {
         });
   }
 
-  _XemThongTinSoundDialog(BuildContext context, int index) async {
+  XemThongTinSoundDialog(BuildContext context, int index) async {
     return showDialog(
         context: context,
         builder: (context) {

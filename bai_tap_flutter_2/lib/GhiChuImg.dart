@@ -10,11 +10,11 @@ class GhiChuImg extends StatefulWidget {
   const GhiChuImg({Key? key}) : super(key: key);
 
   @override
-  _GhiChu2 createState() => _GhiChu2();
+  GhiChuState createState() => GhiChuState();
 }
 
-class _GhiChu2 extends State<GhiChuImg> {
-  Uint8List? _imageBytes;
+class GhiChuState extends State<GhiChuImg> {
+  Uint8List? imageBytes;
   Query ref = FirebaseDatabase.instance.ref();
   Query refAnh = FirebaseDatabase.instance.ref().child('img');
   List<Img> listAnh = [];
@@ -22,7 +22,7 @@ class _GhiChu2 extends State<GhiChuImg> {
 
   @override
   void initState() {
-    _hienThiAnh();
+    hienThiAnh();
     super.initState();
   }
 
@@ -38,7 +38,7 @@ class _GhiChu2 extends State<GhiChuImg> {
             Row(
               children: [
                 IconButton(
-                  onPressed: _layAnh,
+                  onPressed: layAnh,
                   iconSize: 60,
                   color: Colors.red,
                   style: ElevatedButton.styleFrom(
@@ -48,12 +48,12 @@ class _GhiChu2 extends State<GhiChuImg> {
                       Icons.add
                   ),
                 ),
-                if (_imageBytes != null && !delateSave == false)
+                if (imageBytes != null && !delateSave == false)
                   Row(
                     children: [
                       Image.memory(
                         fit: BoxFit.fill,
-                        _imageBytes!,
+                        imageBytes!,
                         height: 200,
                         width: 200,
                       ),
@@ -64,7 +64,7 @@ class _GhiChu2 extends State<GhiChuImg> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ElevatedButton(
-                            onPressed: _luuAnh,
+                            onPressed: luuAnh,
                             child: const Text('Lưu'),
                           ),
                           ElevatedButton(
@@ -116,7 +116,7 @@ class _GhiChu2 extends State<GhiChuImg> {
                                 ),
                                 IconButton(
                                   onPressed:(){
-                                    _xemImgDialog(context, listAnh[index].link.toString());
+                                    xemImgDialog(context, listAnh[index].link.toString());
                                   },
                                   iconSize: 32,
                                   icon: const Icon(
@@ -125,7 +125,7 @@ class _GhiChu2 extends State<GhiChuImg> {
                                 ),
                                 IconButton(
                                   onPressed:(){
-                                    _xoaImgDialog(context, index);
+                                    xoaImgDialog(context, index);
                                   },
                                   iconSize: 32,
                                   icon: const Icon(
@@ -145,32 +145,32 @@ class _GhiChu2 extends State<GhiChuImg> {
     );
   }
 
-  Future<void> _layAnh() async {
+  Future<void> layAnh() async {
     XFile? pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       File imageFile = File(pickedFile.path);
       Uint8List imageBytes = await imageFile.readAsBytes();
       setState(() {
-        _imageBytes = imageBytes;
+        imageBytes = imageBytes;
         delateSave = true;
       });
     }
   }
 
-  Future<void> _luuAnh() async {
+  Future<void> luuAnh() async {
     try {
-      if (_imageBytes != null) {
+      if (imageBytes != null) {
         String imageName = DateTime.now().toString().split('.')[0];
         final firebaseStorage =
             FirebaseStorage.instance.ref().child('$imageName.PNG');
-        firebaseStorage.putData(_imageBytes!);
+        firebaseStorage.putData(imageBytes!);
         Img i = Img(imageName, '$imageName.PNG', '');
         DatabaseReference postListRef = FirebaseDatabase.instance.reference();
         postListRef.child('Img').push().set(i.toJson());
         setState(() {
           Future.delayed(const Duration(seconds: 2), () {
-            _hienThiAnh();
+            hienThiAnh();
           });
 
           delateSave = false;
@@ -179,7 +179,7 @@ class _GhiChu2 extends State<GhiChuImg> {
     } catch (error) {}
   }
 
-  Future<void> _hienThiAnh() async {
+  Future<void> hienThiAnh() async {
     try {
       Query refAnh = FirebaseDatabase.instance.ref('Img').orderByChild('name')/*reference().child('img')*/;
       refAnh.onValue.listen((event) {
@@ -201,31 +201,30 @@ class _GhiChu2 extends State<GhiChuImg> {
   Future<void> layAnhFireBase(String tenAnh) async{
     Reference ref = FirebaseStorage.instance.ref().child(tenAnh);
     String url = await ref.getDownloadURL();
-    listAnh.forEach((img) {
+    for (var img in listAnh) {
       if(img.name == tenAnh){
         setState(() {
           img.link = url;
         });
       }
-    });
+    }
   }
 
-  Future<void> _xoaAnh(int index) async {
+  Future<void> xoaAnh(int index) async {
     DatabaseReference deleteFB = FirebaseDatabase.instance.reference().child('Img/${listAnh[index].key}');
     deleteFB.remove();
 
     final desertRef = FirebaseStorage.instance.ref().child(listAnh[index].name.toString());
     await desertRef.delete();
     setState(() {
-      //listAnh.removeAt(index);
       Future.delayed(const Duration(seconds: 2), () {
         listAnh.removeAt(index);
-        _hienThiAnh();
+        hienThiAnh();
       });
     });
   }
 
-  _xoaImgDialog(BuildContext context, int index) async {
+  xoaImgDialog(BuildContext context, int index) async {
     return showDialog(
         context: context,
         builder: (context) {
@@ -237,7 +236,7 @@ class _GhiChu2 extends State<GhiChuImg> {
 
               ElevatedButton(
                 onPressed: () {
-                  _xoaAnh(index);
+                  xoaAnh(index);
                   Navigator.of(context).pop();
                 },
                   child: const Text('Có'),
@@ -254,7 +253,7 @@ class _GhiChu2 extends State<GhiChuImg> {
         });
   }
 
-  _xemImgDialog(BuildContext context, String a) async {
+  xemImgDialog(BuildContext context, String a) async {
     return showDialog(
         context: context,
         builder: (context) {

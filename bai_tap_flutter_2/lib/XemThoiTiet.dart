@@ -9,16 +9,16 @@ class XemThoiTiet extends StatefulWidget{
   const XemThoiTiet({super.key, required this.thoitietApi});
 
   @override
-  _xemThoiTiet1 createState() => _xemThoiTiet1();
+  XemThoiTietState createState() => XemThoiTietState();
 }
 
 
-class _xemThoiTiet1 extends State<XemThoiTiet> {
+class XemThoiTietState extends State<XemThoiTiet> {
 
   late Future<Map<String, dynamic>> data;
   double? lat = 21.028333;
   double? lon = 105.853333;
-  final TextEditingController _txtThanhPho = TextEditingController();
+  final TextEditingController txtThanhPho = TextEditingController();
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class _xemThoiTiet1 extends State<XemThoiTiet> {
 
   Future<void> getCoordinates() async {
     try {
-      List<Location> locations = await locationFromAddress(_txtThanhPho.text);
+      List<Location> locations = await locationFromAddress(txtThanhPho.text);
       if (locations.isNotEmpty) {
         setState(() {
           lat = locations[0].latitude;
@@ -53,7 +53,7 @@ class _xemThoiTiet1 extends State<XemThoiTiet> {
             height: 60,
             width: 200,
             margin: const EdgeInsets.only(left: 50, top: 0, right: 50, bottom: 25),
-            child: TextField(controller: _txtThanhPho,
+            child: TextField(controller: txtThanhPho,
               style: const TextStyle(fontSize: 25, color: Colors.black),
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),

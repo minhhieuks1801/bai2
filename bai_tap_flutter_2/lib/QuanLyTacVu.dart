@@ -6,21 +6,21 @@ class QuanLyTacVu extends StatefulWidget {
   const QuanLyTacVu({super.key});
 
   @override
-  _QuanLyTacVu1 createState() => _QuanLyTacVu1();
+  QuanLyTacVuState createState() => QuanLyTacVuState();
 }
 
-class _QuanLyTacVu1 extends State<QuanLyTacVu> {
-  final TextEditingController _txtTenTask = TextEditingController();
-  final TextEditingController _txtNoiDungTask = TextEditingController();
+class QuanLyTacVuState extends State<QuanLyTacVu> {
+  final TextEditingController txtTenTask = TextEditingController();
+  final TextEditingController txtNoiDungTask = TextEditingController();
   List<TacVu> listTacVu = [];
 
   @override
   void initState() {
-    _hienThiTacVu();
+    hienThiTacVu();
     super.initState();
   }
 
-  Future<void> _hienThiTacVu() async {
+  Future<void> hienThiTacVu() async {
     try {
       Query refAnh =
           FirebaseDatabase.instance.ref('TacVu').orderByChild('tieuDe');
@@ -30,18 +30,16 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
         listTacVu.clear();
         values.forEach((key, item) {
           setState(() {
-            print(item['tinhTrang']);
             listTacVu.add(TacVu(key, item['tieuDe'].toString(),
                 item['noiDung'].toString(), item['tinhTrang']));
           });
         });
       }, onError: (error) {});
     } catch (e) {
-      print(e);
     }
   }
 
-  Future<void> _hienThiTacVuChuaHoanThanh() async {
+  Future<void> hienThiTacVuChuaHoanThanh() async {
     try {
       Query refAnh =
           FirebaseDatabase.instance.ref('TacVu').orderByChild('tieuDe');
@@ -59,11 +57,10 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
         });
       }, onError: (error) {});
     } catch (e) {
-      print(e);
     }
   }
 
-  _ThemTacVuDialog(BuildContext context) async {
+  themTacVuDialog(BuildContext context) async {
     return showDialog(
         context: context,
         builder: (context) {
@@ -75,7 +72,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextField(
-                    controller: _txtTenTask,
+                    controller: txtTenTask,
                     style: const TextStyle(fontSize: 20, color: Colors.black),
                     maxLines: 1,
                     decoration: const InputDecoration(
@@ -85,7 +82,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                             TextStyle(fontSize: 20, color: Colors.grey)),
                   ),
                   TextField(
-                    controller: _txtNoiDungTask,
+                    controller: txtNoiDungTask,
                     style: const TextStyle(fontSize: 20, color: Colors.black),
                     maxLines: 5,
                     decoration: const InputDecoration(
@@ -101,8 +98,8 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
             actions: <Widget>[
               ElevatedButton(
                 onPressed: () {
-                  TacVu t = TacVu('', _txtTenTask.text.toString(),
-                      _txtNoiDungTask.text.toString(), false);
+                  TacVu t = TacVu('', txtTenTask.text.toString(),
+                      txtNoiDungTask.text.toString(), false);
                   DatabaseReference postListRef =
                       FirebaseDatabase.instance.reference();
                   postListRef.child('TacVu').push().set(t.toJson());
@@ -122,10 +119,10 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
         });
   }
 
-  _SuaTacVuDialog(BuildContext context, int index) async {
-    final TextEditingController _txtSuaTen =
+  suaTacVuDialog(BuildContext context, int index) async {
+    final TextEditingController txtSuaTen =
         TextEditingController(text: listTacVu[index].tieuDe.toString());
-    final TextEditingController _txtSuaNoiDUng =
+    final TextEditingController txtSuaNoiDUng =
         TextEditingController(text: listTacVu[index].noiDung.toString());
     return showDialog(
         context: context,
@@ -138,7 +135,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextField(
-                    controller: _txtSuaTen,
+                    controller: txtSuaTen,
                     style: const TextStyle(fontSize: 20, color: Colors.black),
                     maxLines: 1,
                     decoration: const InputDecoration(
@@ -148,7 +145,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                             TextStyle(fontSize: 20, color: Colors.grey)),
                   ),
                   TextField(
-                    controller: _txtSuaNoiDUng,
+                    controller: txtSuaNoiDUng,
                     style: const TextStyle(fontSize: 20, color: Colors.black),
                     maxLines: 5,
                     decoration: const InputDecoration(
@@ -168,8 +165,8 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
             actions: <Widget>[
               ElevatedButton(
                 onPressed: () {
-                  listTacVu[index].tieuDe = _txtSuaTen.text.toString();
-                  listTacVu[index].noiDung = _txtSuaNoiDUng.text.toString();
+                  listTacVu[index].tieuDe = txtSuaTen.text.toString();
+                  listTacVu[index].noiDung = txtSuaNoiDUng.text.toString();
                   DatabaseReference postListRef =
                       FirebaseDatabase.instance.reference();
                   postListRef
@@ -191,7 +188,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
         });
   }
 
-  _xoaTacVuDialog(BuildContext context, int index) async {
+  xoaTacVuDialog(BuildContext context, int index) async {
     return showDialog(
         context: context,
         builder: (context) {
@@ -202,7 +199,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
             actions: <Widget>[
               ElevatedButton(
                 onPressed: () {
-                  _xoaTacVu(index);
+                  xoaTacVu(index);
                   Navigator.of(context).pop();
                 },
                 child: const Text('Có'),
@@ -218,7 +215,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
         });
   }
 
-  Future<void> _xoaTacVu(int index) async {
+  Future<void> xoaTacVu(int index) async {
     DatabaseReference deleteFB = FirebaseDatabase.instance
         .reference()
         .child('TacVu/${listTacVu[index].key}');
@@ -226,12 +223,12 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
     setState(() {
       listTacVu.removeAt(index);
       Future.delayed(const Duration(seconds: 2), () {
-        _hienThiTacVu();
+        hienThiTacVu();
       });
     });
   }
 
-  Future<void> _UpdateFirebase(int index) async {
+  Future<void> updateFirebase(int index) async {
     DatabaseReference postListRef = FirebaseDatabase.instance.reference();
     postListRef
         .child('TacVu/${listTacVu[index].key}')
@@ -253,7 +250,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                     children: [
                       IconButton(
                         onPressed: () {
-                          _ThemTacVuDialog(context);
+                          themTacVuDialog(context);
                         },
                         iconSize: 30,
                         style: ElevatedButton.styleFrom(
@@ -263,7 +260,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          _hienThiTacVu();
+                          hienThiTacVu();
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.greenAccent, // Background color
@@ -275,7 +272,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          _hienThiTacVuChuaHoanThanh();
+                          hienThiTacVuChuaHoanThanh();
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.greenAccent, // Background color
@@ -320,10 +317,10 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                                 setState(() {
                                   if (value) {
                                     listTacVu[index].tinhTrang = true;
-                                    _UpdateFirebase(index);
+                                    updateFirebase(index);
                                   } else {
                                     listTacVu[index].tinhTrang = false;
-                                    _UpdateFirebase(index);
+                                    updateFirebase(index);
                                   }
                                 });
                               },
@@ -333,7 +330,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                _SuaTacVuDialog(context, index);
+                                suaTacVuDialog(context, index);
                               },
                               child: const Text('Xem'),
                             ),
@@ -342,7 +339,7 @@ class _QuanLyTacVu1 extends State<QuanLyTacVu> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                _xoaTacVuDialog(context, index);
+                                xoaTacVuDialog(context, index);
                               },
                               child: const Text('Xóa'),
                             ),

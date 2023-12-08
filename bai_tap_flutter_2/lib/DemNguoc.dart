@@ -12,9 +12,15 @@ class DemNguoc extends StatefulWidget {
 class DongHo extends State<DemNguoc> {
   Duration thoiGian = Duration.zero;
   int gio = 0, phut = 0, giay = 0;
-  late Timer timer;
   bool a = false;
   bool b = true;
+  late Timer timer;
+
+  @override
+  void initState() {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer){});
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

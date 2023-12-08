@@ -13,20 +13,26 @@ import 'firebase_options.dart';
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MaterialApp(
-    home: bai2_firebase(),
+    home: Bai2(),
     title: 'bai2',
   ));
 }
 
-class bai2_firebase extends StatefulWidget{
-  const bai2_firebase({super.key});
+class Bai2 extends StatefulWidget{
+  const Bai2({super.key});
   @override
-  _ghiChu createState() => _ghiChu();
+  TrangChu createState() => TrangChu();
 }
 
-class _ghiChu extends State<bai2_firebase> {
+class TrangChu extends State<Bai2> {
   List<dynamic> list = [];
   late ThoiTietApi thoiTietApi = ThoiTietApi();
+
+  @override
+  void initState() {
+    thoiTietApi = ThoiTietApi();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +46,7 @@ class _ghiChu extends State<bai2_firebase> {
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ghiChuTxt())
+                      MaterialPageRoute(builder: (context) => const GhiChuTxt())
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -69,7 +75,7 @@ class _ghiChu extends State<bai2_firebase> {
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ghiChuSound())
+                      MaterialPageRoute(builder: (context) => const GhiChuSound())
                   );
                 },
                 style: ElevatedButton.styleFrom(

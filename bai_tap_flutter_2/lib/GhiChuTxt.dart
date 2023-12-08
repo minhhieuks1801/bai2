@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'model/Txt.dart';
 
-class ghiChuTxt extends StatefulWidget{
-  const ghiChuTxt({super.key});
+class GhiChuTxt extends StatefulWidget{
+  const GhiChuTxt({super.key});
   @override
-  _ghiChu1 createState() => _ghiChu1();
+  GhiChuTextState createState() => GhiChuTextState();
 }
 
 
-class _ghiChu1 extends State<ghiChuTxt> {
-  final TextEditingController _txtGhi = TextEditingController();
+class GhiChuTextState extends State<GhiChuTxt> {
+  final TextEditingController txtGhi = TextEditingController();
   List<Txt> listTxt = [];
 
   @override
   void initState() {
-    _hienThiGhiChu();
+    hienThiGhiChu();
     super.initState();
   }
 
@@ -29,7 +29,7 @@ class _ghiChu1 extends State<ghiChuTxt> {
           children: [
             ElevatedButton(
               onPressed: () {
-                _nhapTextDialog(context);
+                nhapTextDialog(context);
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.greenAccent, // Background color
@@ -57,7 +57,7 @@ class _ghiChu1 extends State<ghiChuTxt> {
                     const Expanded(child: SizedBox()),
                     ElevatedButton(
                       onPressed: () {
-                        _xemTextDialog(context, listTxt[i].name.toString());
+                        xemTextDialog(context, listTxt[i].name.toString());
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.lightGreenAccent, // Background color
@@ -69,7 +69,7 @@ class _ghiChu1 extends State<ghiChuTxt> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        _xoaImgDialog(context ,i);
+                        xoaImgDialog(context ,i);
                         setState(() {});
                       },
                       style: ElevatedButton.styleFrom(
@@ -86,13 +86,13 @@ class _ghiChu1 extends State<ghiChuTxt> {
     );
   }
 
-  _nhapTextDialog(BuildContext context) async {
+  nhapTextDialog(BuildContext context) async {
     return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             content: TextField(
-              controller: _txtGhi,
+              controller: txtGhi,
               decoration: const InputDecoration(hintText: "Nhập nội dung"),
             ),
             actions: <Widget>[
@@ -101,7 +101,7 @@ class _ghiChu1 extends State<ghiChuTxt> {
                 onPressed: () {
                   Navigator.of(context).pop();
                   String imageName = DateTime.now().toString().split('.')[0];
-                  Txt i = Txt(imageName, _txtGhi.text.toString());
+                  Txt i = Txt(imageName, txtGhi.text.toString());
                   DatabaseReference postListRef = FirebaseDatabase.instance.reference();
                   postListRef.child('Txt').push().set(i.toJson());
                   setState(() {});
@@ -112,7 +112,7 @@ class _ghiChu1 extends State<ghiChuTxt> {
         });
   }
 
-  _xemTextDialog(BuildContext context, String a) async {
+  xemTextDialog(BuildContext context, String a) async {
     return showDialog(
         context: context,
         builder: (context) {
@@ -133,7 +133,7 @@ class _ghiChu1 extends State<ghiChuTxt> {
           );
         });
   }
-  _xoaImgDialog(BuildContext context, int index) async {
+  xoaImgDialog(BuildContext context, int index) async {
     return showDialog(
         context: context,
         builder: (context) {
@@ -145,7 +145,7 @@ class _ghiChu1 extends State<ghiChuTxt> {
 
               ElevatedButton(
                 onPressed: () {
-                  _xoaGhiChu(index);
+                  xoaGhiChu(index);
                   Navigator.of(context).pop();
                 },
                 child: const Text('Có'),
@@ -162,7 +162,7 @@ class _ghiChu1 extends State<ghiChuTxt> {
         });
   }
 
-  Future<void> _xoaGhiChu(int index) async {
+  Future<void> xoaGhiChu(int index) async {
     DatabaseReference deleteFB = FirebaseDatabase.instance.reference().child('Txt/${listTxt[index].key}');
     deleteFB.remove();
     setState(() {
@@ -173,7 +173,7 @@ class _ghiChu1 extends State<ghiChuTxt> {
   }
 
 
-  Future<void> _hienThiGhiChu() async {
+  Future<void> hienThiGhiChu() async {
     try {
       Query refAnh = FirebaseDatabase.instance.ref('Txt').orderByChild('name')/*reference().child('img')*/;
       refAnh.onValue.listen((event) {
