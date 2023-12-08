@@ -43,7 +43,8 @@ dependencies:
   firebase_core: ^2.23.0
   firebase_database: ^10.2.5
   firebase_storage: ^11.5.2
-
+  #state_notifier:
+  flutter_bloc: ^8.1.3
   flutter:
     sdk: flutter
 

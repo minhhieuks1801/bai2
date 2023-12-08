@@ -18,6 +18,7 @@ class GhiChuState extends State<GhiChuImg> {
   Query ref = FirebaseDatabase.instance.ref();
   Query refAnh = FirebaseDatabase.instance.ref().child('img');
   List<Img> listAnh = [];
+  List<Img> listAnh1 = [];
   bool delateSave = false;
 
   @override
@@ -165,7 +166,7 @@ class GhiChuState extends State<GhiChuImg> {
         final firebaseStorage =
             FirebaseStorage.instance.ref().child('$imageName.PNG');
         firebaseStorage.putData(imageBytes!);
-        Img i = Img(imageName, '$imageName.PNG', '');
+        Img i = Img(key: imageName, name: '$imageName.PNG', link: '');
         DatabaseReference postListRef = FirebaseDatabase.instance.reference();
         postListRef.child('Img').push().set(i.toJson());
         setState(() {
@@ -184,10 +185,10 @@ class GhiChuState extends State<GhiChuImg> {
       Query refAnh = FirebaseDatabase.instance.ref('Img').orderByChild('name')/*reference().child('img')*/;
       refAnh.onValue.listen((event) {
         Map<dynamic, dynamic> values = event.snapshot.value as Map<dynamic, dynamic>;
-        listAnh.clear();
+        listAnh1.clear();
         values.forEach((key, item) {
           setState(() {
-            listAnh.add(Img(key, item['name'].toString(), ''));
+            listAnh1.add(Img(key: key, name: item['name'].toString(), link: ''));
             layAnhFireBase(item['name'].toString());
           });
         });
@@ -201,13 +202,14 @@ class GhiChuState extends State<GhiChuImg> {
   Future<void> layAnhFireBase(String tenAnh) async{
     Reference ref = FirebaseStorage.instance.ref().child(tenAnh);
     String url = await ref.getDownloadURL();
-    for (var img in listAnh) {
-      if(img.name == tenAnh){
-        setState(() {
-          img.link = url;
-        });
-      }
-    }
+    setState(() {
+      listAnh1.where((img) => img.name == tenAnh).forEach((img) {
+        listAnh.add(img.copyWith(link: url));
+      });
+    });
+    listAnh;
+    //listAnh.where((s) => s.name == tenAnh).map((img) => img.copyWith(link: url)).toList();
+
   }
 
   Future<void> xoaAnh(int index) async {
@@ -218,7 +220,7 @@ class GhiChuState extends State<GhiChuImg> {
     await desertRef.delete();
     setState(() {
       Future.delayed(const Duration(seconds: 2), () {
-        listAnh.removeAt(index);
+        //listAnh.removeAt(index);
         hienThiAnh();
       });
     });

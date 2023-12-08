@@ -10,13 +10,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1bad6f7f-8714-4b3b-b999-cfc26957ed5c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/GhiChuImg2.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/DemNguoc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/DemNguoc.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/GhiChuImg.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/GhiChuImg.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/GhiChuSound.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/GhiChuSound.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/GhiChuTxt.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/GhiChuTxt.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/QuanLyTacVu.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/QuanLyTacVu.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/XemThoiTiet.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/XemThoiTiet.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/model/Img.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/lib/model/Img.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bai_tap_flutter_2/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../bai_tap_flutter_2/pubspec.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,19 +43,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/minhh/StudioProjects/bai2/untitled1&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;AndroidSdkUpdater&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "io.flutter.reload.alreadyRun": "true",
+    "last_opened_file_path": "C:/Users/minhh/StudioProjects/untitled",
+    "settings.editor.selected.configurable": "AndroidSdkUpdater",
+    "show.migrate.to.gradle.popup": "false"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\minhh\StudioProjects\untitled1\lib" />

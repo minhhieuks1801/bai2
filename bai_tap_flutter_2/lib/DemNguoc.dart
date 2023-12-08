@@ -45,7 +45,7 @@ class DongHo extends State<DemNguoc> {
                       ),
                       children: [
                         for(int i = 0; i< 24; i++)
-                          Text(i.toInt().toString(),
+                          Text(i as String,
                             style: const TextStyle(fontSize: 35, color: Colors.amber),
                           )
                       ],
@@ -69,7 +69,7 @@ class DongHo extends State<DemNguoc> {
                       ),
                       children: [
                         for(int i = 0; i< 60; i++)
-                          Text(i.toInt().toString(),
+                          Text(i as String,
                             style: const TextStyle(fontSize: 35, color: Colors.amber),
                           )
                       ],
@@ -94,7 +94,7 @@ class DongHo extends State<DemNguoc> {
                       ),
                       children: [
                         for(int i = 0; i< 60; i++)
-                          Text(i.toInt().toString(),
+                          Text(i as String,
                             style: const TextStyle(fontSize: 35, color: Colors.amber),
                           ),
                       ],

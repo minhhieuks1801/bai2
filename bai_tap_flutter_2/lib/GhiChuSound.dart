@@ -343,27 +343,23 @@ class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin 
     } catch(e){
     }
   }
-  Future<void> layFileFireBase(String tenAnh) async{
-    Reference ref = FirebaseStorage.instance.ref().child(tenAnh);
+  Future<void> layFileFireBase(String tenfile) async{
+    Reference ref = FirebaseStorage.instance.ref().child(tenfile);
     String url = await ref.getDownloadURL();
-    for (var sound in listItem) {
-      if(sound.name == tenAnh){
-        setState(() {
-          sound.link = url;
-        });
-      }
-    }
+    listItem.where((s) => s.name == tenfile).forEach((s) {
+      setState(() {
+        s.link = url;
+      });
+    });
   }
   Future<void> layAnhFireBase(String tenAnh) async{
     Reference ref = FirebaseStorage.instance.ref().child(tenAnh);
     String url = await ref.getDownloadURL();
-    for (var s in listItem) {
-      if(s.image == tenAnh){
-        setState(() {
-          s.linkAnh = url;
-        });
-      }
-    }
+    listItem.where((s) => s.image == tenAnh).forEach((s) {
+      setState(() {
+        s.linkAnh = url;
+      });
+    });
   }
 
   Future<void> xoaAnh(int index) async {
