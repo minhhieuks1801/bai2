@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/DemNguoc.dart';
 import 'package:untitled1/QuanLyTacVu.dart';
-import 'package:untitled1/ghiChuImg.dart';
-import 'package:untitled1/ghiChuTxt.dart';
-import 'package:untitled1/ghiChuSound.dart';
+import 'package:untitled1/GhiChuImg.dart';
+import 'package:untitled1/GhiChuTxt.dart';
+import 'package:untitled1/GhiChuSound.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:untitled1/XemThoiTiet.dart';
 import 'firebase_options.dart';
@@ -55,7 +55,7 @@ class _ghiChu extends State<bai2_firebase> {
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ghiChuImg())
+                      MaterialPageRoute(builder: (context) => const GhiChuImg())
                   );
                 },
                 style: ElevatedButton.styleFrom(

@@ -6,14 +6,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:untitled1/model/Img.dart';
 
-class ghiChuImg extends StatefulWidget {
-  const ghiChuImg({super.key});
+class GhiChuImg extends StatefulWidget {
+  const GhiChuImg({Key? key}) : super(key: key);
 
   @override
-  _ghiChu2 createState() => _ghiChu2();
+  _GhiChu2 createState() => _GhiChu2();
 }
 
-class _ghiChu2 extends State<ghiChuImg> {
+class _GhiChu2 extends State<GhiChuImg> {
   Uint8List? _imageBytes;
   Query ref = FirebaseDatabase.instance.ref();
   Query refAnh = FirebaseDatabase.instance.ref().child('img');

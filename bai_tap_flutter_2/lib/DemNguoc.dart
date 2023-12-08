@@ -6,10 +6,10 @@ class DemNguoc extends StatefulWidget {
   const DemNguoc({super.key});
 
   @override
-  _DongHo createState() => _DongHo();
+  DongHo createState() => DongHo();
 }
 
-class _DongHo extends State<DemNguoc> {
+class DongHo extends State<DemNguoc> {
   Duration thoiGian = Duration.zero;
   int gio = 0, phut = 0, giay = 0;
   late Timer timer;
@@ -29,7 +29,7 @@ class _DongHo extends State<DemNguoc> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Container(
+                  SizedBox(
                     height: 300,
                     width: 40,
                     child: CupertinoPicker(
@@ -53,7 +53,7 @@ class _DongHo extends State<DemNguoc> {
                   const Text('Giờ',
                     style: TextStyle(fontSize: 25, color: Colors.white),
                   ),
-                  Container(
+                  SizedBox(
                     height: 300,
                     width: 40,
                     child: CupertinoPicker(
@@ -78,7 +78,7 @@ class _DongHo extends State<DemNguoc> {
                   const Text('Phút',
                     style: TextStyle(fontSize: 25, color: Colors.white),
                   ),
-                  Container(
+                  SizedBox(
                     height: 300,
                     width: 40,
                     child: CupertinoPicker(
