@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:untitled1/DemNguoc.dart';
-import 'package:untitled1/QuanLyTacVu.dart';
-import 'package:untitled1/GhiChuImg.dart';
-import 'package:untitled1/GhiChuTxt.dart';
-import 'package:untitled1/GhiChuSound.dart';
+import 'package:untitled1/dem_nguoc.dart';
+import 'package:untitled1/ghi_chu_sound.dart';
+import 'package:untitled1/quan_ly_tac_vu.dart';
+import 'package:untitled1/ghi_chu_img.dart';
+import 'package:untitled1/ghi_chu_txt.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:untitled1/XemThoiTiet.dart';
+import 'package:untitled1/xem_thoi_tiet.dart';
 import 'firebase_options.dart';
  Future<void> main() async {
    WidgetsFlutterBinding.ensureInitialized();
