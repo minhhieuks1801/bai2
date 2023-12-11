@@ -35,11 +35,17 @@ class GhiChuState extends State<GhiChuImg> {
       body: Container(
         margin: const EdgeInsets.only(top: 10),
         child: Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
             Row(
               children: [
                 IconButton(
-                  onPressed: layAnh,
+                  onPressed: (){
+                    layAnh();
+                    print(imageBytes);
+                    print(delateSave);
+                    },
                   iconSize: 60,
                   color: Colors.red,
                   style: ElevatedButton.styleFrom(
@@ -151,9 +157,9 @@ class GhiChuState extends State<GhiChuImg> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       File imageFile = File(pickedFile.path);
-      Uint8List imageBytes = await imageFile.readAsBytes();
+      Uint8List imageBytes1 = await imageFile.readAsBytes();
       setState(() {
-        imageBytes = imageBytes;
+        imageBytes = imageBytes1;
         delateSave = true;
       });
     }
@@ -173,7 +179,6 @@ class GhiChuState extends State<GhiChuImg> {
           Future.delayed(const Duration(seconds: 2), () {
             hienThiAnh();
           });
-
           delateSave = false;
         });
       }
