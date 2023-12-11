@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:untitled1/model/tac_vu.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -13,6 +14,7 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
   final TextEditingController txtTenTask = TextEditingController();
   final TextEditingController txtNoiDungTask = TextEditingController();
   List<TacVu> listTacVu = [];
+  final Logger logger = Logger('');
 
   @override
   void initState() {
@@ -36,6 +38,7 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
         });
       }, onError: (error) {});
     } catch (e) {
+      logger.warning('Lỗi : $e');
     }
   }
 
@@ -57,6 +60,7 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
         });
       }, onError: (error) {});
     } catch (e) {
+      logger.warning('Lỗi : $e');
     }
   }
 
@@ -101,7 +105,7 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
                   TacVu t = TacVu(key: '', tieuDe: txtTenTask.text.toString(),
                       noiDung: txtNoiDungTask.text.toString(), tinhTrang: false);
                   DatabaseReference postListRef =
-                      FirebaseDatabase.instance.reference();
+                      FirebaseDatabase.instance.ref();
                   postListRef.child('TacVu').push().set(t.toJson());
                   setState(() {});
                   Navigator.of(context).pop();
@@ -171,7 +175,7 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
                       noiDung: txtSuaNoiDUng.text.toString()
                   );
                   DatabaseReference postListRef =
-                      FirebaseDatabase.instance.reference();
+                      FirebaseDatabase.instance.ref();
                   postListRef
                       .child('TacVu/${listTacVu[index].key}')
                       .update(tv.toJson());
@@ -219,9 +223,7 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
   }
 
   Future<void> xoaTacVu(int index) async {
-    DatabaseReference deleteFB = FirebaseDatabase.instance
-        .reference()
-        .child('TacVu/${listTacVu[index].key}');
+    DatabaseReference deleteFB = FirebaseDatabase.instance.ref().child('TacVu/${listTacVu[index].key}');
     deleteFB.remove();
     setState(() {
       listTacVu.removeAt(index);
@@ -234,7 +236,7 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
   Future<void> updateFirebase(int index, bool a) async {
     TacVu tv = listTacVu[index].copyWith(tinhTrang: a, tieuDe: listTacVu[index].tieuDe,
     noiDung: listTacVu[index].noiDung, key: listTacVu[index].key);
-    DatabaseReference postListRef = FirebaseDatabase.instance.reference();
+    DatabaseReference postListRef = FirebaseDatabase.instance.ref();
     postListRef
         .child('TacVu/${tv.key}')
         .update(tv.toJson());
@@ -259,7 +261,7 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
                         },
                         iconSize: 30,
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.red, // Background color
+                          backgroundColor: Colors.red, // Background color
                         ),
                         icon: const Icon(Icons.add),
                       ),
@@ -268,7 +270,7 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
                           hienThiTacVu();
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.greenAccent, // Background color
+                          backgroundColor: Colors.greenAccent, // Background color
                         ),
                         child: const Text(
                           'Tất cả',
@@ -280,7 +282,7 @@ class QuanLyTacVuState extends State<QuanLyTacVu> {
                           hienThiTacVuChuaHoanThanh();
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.greenAccent, // Background color
+                          backgroundColor: Colors.greenAccent, // Background color
                         ),
                         child: const Text(
                           'Chưa hoàn thành',

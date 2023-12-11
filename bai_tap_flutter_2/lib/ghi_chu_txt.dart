@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:logging/logging.dart';
 import 'model/txt.dart';
 
 class GhiChuTxt extends StatefulWidget{
@@ -12,6 +13,7 @@ class GhiChuTxt extends StatefulWidget{
 class GhiChuTextState extends State<GhiChuTxt> {
   final TextEditingController txtGhi = TextEditingController();
   List<Txt> listTxt = [];
+  final Logger logger = Logger('');
 
   @override
   void initState() {
@@ -32,7 +34,7 @@ class GhiChuTextState extends State<GhiChuTxt> {
                 nhapTextDialog(context);
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.greenAccent, // Background color
+                backgroundColor: Colors.greenAccent, // Background color
               ),
               child: const Text('Thêm',
                 style: TextStyle(fontSize: 15, color: Colors.black),
@@ -60,7 +62,7 @@ class GhiChuTextState extends State<GhiChuTxt> {
                         xemTextDialog(context, listTxt[i].name.toString());
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.lightGreenAccent, // Background color
+                        backgroundColor: Colors.lightGreenAccent, // Background color
                       ),
                       child: const Text('Xem'),
                     ),
@@ -73,7 +75,7 @@ class GhiChuTextState extends State<GhiChuTxt> {
                         setState(() {});
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.lightGreenAccent, // Background color
+                        backgroundColor: Colors.lightGreenAccent, // Background color
                       ),
                       child: const Text('Xóa'),
                     ),
@@ -102,7 +104,7 @@ class GhiChuTextState extends State<GhiChuTxt> {
                   Navigator.of(context).pop();
                   String imageName = DateTime.now().toString().split('.')[0];
                   Txt i = Txt(key: imageName, name: txtGhi.text.toString());
-                  DatabaseReference postListRef = FirebaseDatabase.instance.reference();
+                  DatabaseReference postListRef = FirebaseDatabase.instance.ref();
                   postListRef.child('Txt').push().set(i.toJson());
                   setState(() {});
                 },
@@ -163,7 +165,7 @@ class GhiChuTextState extends State<GhiChuTxt> {
   }
 
   Future<void> xoaGhiChu(int index) async {
-    DatabaseReference deleteFB = FirebaseDatabase.instance.reference().child('Txt/${listTxt[index].key}');
+    DatabaseReference deleteFB = FirebaseDatabase.instance.ref().child('Txt/${listTxt[index].key}');
     deleteFB.remove();
     setState(() {
       listTxt.removeAt(index);
@@ -175,7 +177,7 @@ class GhiChuTextState extends State<GhiChuTxt> {
 
   Future<void> hienThiGhiChu() async {
     try {
-      Query refAnh = FirebaseDatabase.instance.ref('Txt').orderByChild('name')/*reference().child('img')*/;
+      Query refAnh = FirebaseDatabase.instance.ref('Txt').orderByChild('name');
       refAnh.onValue.listen((event) {
         Map<dynamic, dynamic> values = event.snapshot.value as Map<dynamic, dynamic>;
         listTxt.clear();
@@ -187,7 +189,7 @@ class GhiChuTextState extends State<GhiChuTxt> {
       }, onError: (error) {
       });
     } catch(e){
-      print(e);
+      logger.warning('Lỗi : $e');
     }
   }
 }

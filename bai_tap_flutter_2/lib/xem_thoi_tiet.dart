@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
+import 'package:logging/logging.dart';
 
 class XemThoiTiet extends StatefulWidget{
   final ThoiTietApi thoitietApi;
@@ -19,6 +20,7 @@ class XemThoiTietState extends State<XemThoiTiet> {
   double? lat = 21.028333;
   double? lon = 105.853333;
   final TextEditingController txtThanhPho = TextEditingController();
+  final Logger logger = Logger('');
 
   @override
   void initState() {
@@ -38,7 +40,7 @@ class XemThoiTietState extends State<XemThoiTiet> {
       } else {
       }
     } catch (e) {
-      print('$e');
+      logger.warning('Lỗi : $e');
     }
   }
 
@@ -67,7 +69,7 @@ class XemThoiTietState extends State<XemThoiTiet> {
                 getCoordinates();
               },
             style: ElevatedButton.styleFrom(
-              primary: Colors.greenAccent, // Background color
+              backgroundColor: Colors.greenAccent, // Background color
             ),
               child: const Text('Chọn thành phố',
                   style: TextStyle(fontSize: 25, color: Colors.black)

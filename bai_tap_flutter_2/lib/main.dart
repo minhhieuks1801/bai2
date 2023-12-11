@@ -50,7 +50,7 @@ class TrangChu extends State<Bai2> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.greenAccent, // Background color
+                  backgroundColor: Colors.greenAccent, // Background color
                 ),
                 child: const Text('Bản ghi text',
                   style: TextStyle(fontSize: 15, color: Colors.black),
@@ -65,7 +65,7 @@ class TrangChu extends State<Bai2> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.greenAccent, // Background color
+                  backgroundColor: Colors.greenAccent, // Background color
                 ),
                 child: const Text('Bản ghi hình',
                   style: TextStyle(fontSize: 15, color: Colors.black),
@@ -79,7 +79,7 @@ class TrangChu extends State<Bai2> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.greenAccent, // Background color
+                  backgroundColor: Colors.greenAccent, // Background color
                 ),
                 child: const Text('Bản ghi âm',
                   style: TextStyle(fontSize: 15, color: Colors.black),
@@ -93,7 +93,7 @@ class TrangChu extends State<Bai2> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.greenAccent, // Background color
+                  backgroundColor: Colors.greenAccent, // Background color
                 ),
                 child: const Text('Xem thời tiết',
                   style: TextStyle(fontSize: 15, color: Colors.black),
@@ -107,7 +107,7 @@ class TrangChu extends State<Bai2> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.greenAccent, // Background color
+                  backgroundColor: Colors.greenAccent, // Background color
                 ),
                 child: const Text('Đếm ngược',
                   style: TextStyle(fontSize: 15, color: Colors.black),
@@ -121,7 +121,7 @@ class TrangChu extends State<Bai2> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.greenAccent, // Background color
+                  backgroundColor: Colors.greenAccent, // Background color
                 ),
                 child: const Text('Quản lý tác vụ',
                   style: TextStyle(fontSize: 15, color: Colors.black),

@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:untitled1/model/img.dart';
+import 'package:logging/logging.dart';
 
 class GhiChuImg extends StatefulWidget {
   const GhiChuImg({Key? key}) : super(key: key);
@@ -19,6 +20,7 @@ class GhiChuState extends State<GhiChuImg> {
   Query refAnh = FirebaseDatabase.instance.ref().child('img');
   List<Img> listAnh = [];
   bool delateSave = false;
+  final Logger logger = Logger('');
 
   @override
   void initState() {
@@ -42,13 +44,11 @@ class GhiChuState extends State<GhiChuImg> {
                 IconButton(
                   onPressed: (){
                     layAnh();
-                    print(imageBytes);
-                    print(delateSave);
                     },
                   iconSize: 60,
                   color: Colors.red,
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.white, // Background color
+                    backgroundColor: Colors.white, // Background color
                   ),
                   icon: const Icon(
                       Icons.add
@@ -172,7 +172,7 @@ class GhiChuState extends State<GhiChuImg> {
             FirebaseStorage.instance.ref().child('$imageName.PNG');
         firebaseStorage.putData(imageBytes!);
         Img i = Img(key: imageName, name: '$imageName.PNG', link: '');
-        DatabaseReference postListRef = FirebaseDatabase.instance.reference();
+        DatabaseReference postListRef = FirebaseDatabase.instance.ref();
         postListRef.child('Img').push().set(i.toJson());
         setState(() {
           Future.delayed(const Duration(seconds: 2), () {
@@ -181,7 +181,9 @@ class GhiChuState extends State<GhiChuImg> {
           delateSave = false;
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      logger.warning('Lỗi : $error');
+    }
   }
 
   Future<void> hienThiAnh() async {
@@ -198,8 +200,8 @@ class GhiChuState extends State<GhiChuImg> {
         });
       }, onError: (error) {
       });
-    } catch(e){
-      print(e);
+    } catch(error){
+      logger.warning('Lỗi : $error');
     }
   }
 
@@ -216,7 +218,7 @@ class GhiChuState extends State<GhiChuImg> {
   }
 
   Future<void> xoaAnh(int index) async {
-    DatabaseReference deleteFB = FirebaseDatabase.instance.reference().child('Img/${listAnh[index].key}');
+    DatabaseReference deleteFB = FirebaseDatabase.instance.ref().child('Img/${listAnh[index].key}');
     deleteFB.remove();
 
     final desertRef = FirebaseStorage.instance.ref().child(listAnh[index].name.toString());

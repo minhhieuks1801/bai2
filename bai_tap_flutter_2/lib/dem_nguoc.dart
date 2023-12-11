@@ -130,7 +130,7 @@ class DongHo extends State<DemNguoc> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.cyan, // Background color
+                      backgroundColor: Colors.cyan, // Background color
                     ),
                     child: b? const Text('Chạy',
                       style: TextStyle(fontSize: 20, color: Colors.white),
@@ -161,7 +161,7 @@ class DongHo extends State<DemNguoc> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.cyan, // Background color
+                      backgroundColor: Colors.cyan, // Background color
                     ),
                     child: !a? const Text('Dừng',
                       style: TextStyle(fontSize: 20, color: Colors.white),

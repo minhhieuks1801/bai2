@@ -4,8 +4,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:logging/logging.dart';
 import 'package:record/record.dart';
-import 'package:audioplayers/audioplayers.dart' show PlayerState;
 
 
 
@@ -31,6 +31,7 @@ class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin 
   String link = '';
   bool moNhac = false;
   Duration? k;
+  final Logger logger = Logger('');
 
   @override
   void initState() {
@@ -239,7 +240,7 @@ class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin 
                                   ),
                                   IconButton(
                                     onPressed: (){
-                                      XemThongTinSoundDialog(context, index);
+                                      xemThongTinSoundDialog(context, index);
                                     },
                                     icon: const Icon(
                                         Icons.visibility
@@ -314,7 +315,7 @@ class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin 
     try {
       Reference storageReference = FirebaseStorage.instance.ref().child('$name.M4A');
       Sound i = Sound(key: '', name: '$name.M4A', link: '', linkAnh: '', tacGia: 'Nguyễn Minh Hiệu', image: 'khỉ đá 2.PNG', thoiGian: name);
-      DatabaseReference postListRef = FirebaseDatabase.instance.reference();
+      DatabaseReference postListRef = FirebaseDatabase.instance.ref();
       postListRef.child('Sound').push().set(i.toJson());
       // Tải lên là tệp M4a
       await storageReference.putFile(
@@ -322,7 +323,7 @@ class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin 
         SettableMetadata(contentType: 'audio/m4a'),
       );
     } catch (e) {
-      print('Error uploading file: $e');
+      logger.warning('Lỗi : $e');
     }
   }
   Future<void> hienThiFile() async {
@@ -340,6 +341,7 @@ class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin 
       }, onError: (error) {
       });
     } catch(e){
+      logger.warning('Lỗi : $e');
     }
   }
   Future<void> layFileFireBase(String tenfile, String tenAnh) async{
@@ -354,7 +356,7 @@ class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin 
     });
   }
   Future<void> xoaAnh(int index) async {
-    DatabaseReference deleteFB = FirebaseDatabase.instance.reference().child('Sound/${listItem[index].key}');
+    DatabaseReference deleteFB = FirebaseDatabase.instance.ref().child('Sound/${listItem[index].key}');
     deleteFB.remove();
 
     final desertRef = FirebaseStorage.instance.ref().child(listItem[index].name.toString());
@@ -395,7 +397,7 @@ class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin 
         });
   }
 
-  XemThongTinSoundDialog(BuildContext context, int index) async {
+  xemThongTinSoundDialog(BuildContext context, int index) async {
     return showDialog(
         context: context,
         builder: (context) {
