@@ -18,7 +18,6 @@ class GhiChuState extends State<GhiChuImg> {
   Query ref = FirebaseDatabase.instance.ref();
   Query refAnh = FirebaseDatabase.instance.ref().child('img');
   List<Img> listAnh = [];
-  List<Img> listAnh1 = [];
   bool delateSave = false;
 
   @override
@@ -190,11 +189,10 @@ class GhiChuState extends State<GhiChuImg> {
       Query refAnh = FirebaseDatabase.instance.ref('Img').orderByChild('name')/*reference().child('img')*/;
       refAnh.onValue.listen((event) {
         Map<dynamic, dynamic> values = event.snapshot.value as Map<dynamic, dynamic>;
-        listAnh1.clear();
         listAnh.clear();
         values.forEach((key, item) {
           setState(() {
-            listAnh1.add(Img(key: key, name: item['name'].toString(), link: ''));
+            listAnh.add(Img(key: key, name: item['name'].toString(), link: ''));
             layAnhFireBase(item['name'].toString());
           });
         });
@@ -209,8 +207,11 @@ class GhiChuState extends State<GhiChuImg> {
     Reference ref = FirebaseStorage.instance.ref().child(tenAnh);
     String url = await ref.getDownloadURL();
     setState(() {
-      listAnh1.where((img) => img.name == tenAnh).forEach((img) {
-        listAnh.add(img.copyWith(key: img.key,link: url, name: img.name));
+      listAnh.where((img) => img.name == tenAnh).forEach((img) {
+        Img i = img.copyWith(key: img.key,link: url, name: img.name);
+        int index = listAnh.indexOf(img);
+        listAnh.removeAt(index);
+        listAnh.insert(index, i);
       });
     });
     //listAnh.where((s) => s.name == tenAnh).map((img) => img.copyWith(link: url)).toList();
