@@ -24,7 +24,7 @@ class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin 
   late AudioPlayer audioPlayer;
   bool isRecording = false;
   String? audioPath = '';
-  List<Sound> listItem = [], listItem1 = [];
+  List<Sound> listItem = [];
   bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
@@ -330,11 +330,10 @@ class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin 
       Query refAnh = FirebaseDatabase.instance.ref('Sound').orderByChild('name');
       refAnh.onValue.listen((event) {
         Map<dynamic, dynamic> values = event.snapshot.value as Map<dynamic, dynamic>;
-        listItem1.clear();
         listItem.clear();
         values.forEach((key, item) {
           setState(() {
-            listItem1.add(Sound(key: key, name: item['name'].toString(), link: '', linkAnh: '', tacGia: item['tacGia'].toString(), image: item['image'].toString(), thoiGian: item['thoiGian'].toString()));
+            listItem.add(Sound(key: key, name: item['name'].toString(), link: '', linkAnh: '', tacGia: item['tacGia'].toString(), image: item['image'].toString(), thoiGian: item['thoiGian'].toString()));
             layFileFireBase(item['name'].toString(), item['image'].toString());
           });
         });
@@ -349,12 +348,11 @@ class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin 
     Reference refAnh = FirebaseStorage.instance.ref().child(tenAnh);
     String urlAnh = await refAnh.getDownloadURL();
       setState(() {
-        listItem1.where((s) => s.name == tenfile).forEach((s) {
-          listItem.add(s.copyWith(link: url, linkAnh: urlAnh, key: s.key, name: s.name, thoiGian: s.thoiGian, image: s.image, tacGia: s.tacGia));
-      });
+        listItem.setAll(listItem.indexWhere((sound) => sound.name == tenfile),
+            listItem.where((sound) => sound.name == tenfile)
+            .map((s) => s.copyWith(link: url, linkAnh: urlAnh, key: s.key, name: s.name, thoiGian: s.thoiGian, image: s.image, tacGia: s.tacGia)).toList());
     });
   }
-
   Future<void> xoaAnh(int index) async {
     DatabaseReference deleteFB = FirebaseDatabase.instance.reference().child('Sound/${listItem[index].key}');
     deleteFB.remove();

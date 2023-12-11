@@ -11,7 +11,7 @@ class GhiChuTxt extends StatefulWidget{
 
 class GhiChuTextState extends State<GhiChuTxt> {
   final TextEditingController txtGhi = TextEditingController();
-  List<Txt> listTxt = [], listTxt2 = [];
+  List<Txt> listTxt = [];
 
   @override
   void initState() {

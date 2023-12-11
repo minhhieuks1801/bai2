@@ -19,8 +19,8 @@ class Img {
      );
    }
 
-   factory Img.fromJson(Map<String, dynamic> json) => _$ImgFromJson(json);
+   factory Img.fromJson(Map<String, dynamic> json) => $ImgFromJson(json);
 
-   Map<String, dynamic> toJson() => _$ImgToJson(this);
+   Map<String, dynamic> toJson() => $ImgToJson(this);
 
 }

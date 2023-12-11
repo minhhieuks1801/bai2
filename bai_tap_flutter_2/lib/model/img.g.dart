@@ -6,14 +6,10 @@ part of 'img.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Img _$ImgFromJson(Map<String, dynamic> json) => Img(
-      key: json['key'] as String?,
+Img $ImgFromJson(Map<String, dynamic> json) => Img(
       name: json['name'] as String?,
-      link: json['link'] as String?,
     );
 
-Map<String, dynamic> _$ImgToJson(Img instance) => <String, dynamic>{
-      'key': instance.key,
+Map<String, dynamic> $ImgToJson(Img instance) => <String, dynamic>{
       'name': instance.name,
-      'link': instance.link,
     };

@@ -21,9 +21,9 @@ class TacVu {
     );
   }
 
-  factory TacVu.fromJson(Map<String, dynamic> json) => _$TacVuFromJson(json);
+  factory TacVu.fromJson(Map<String, dynamic> json) => $TacVuFromJson(json);
 
-  Map<String, dynamic> toJson() => _$TacVuToJson(this);
+  Map<String, dynamic> toJson() => $TacVuToJson(this);
 
 
 }

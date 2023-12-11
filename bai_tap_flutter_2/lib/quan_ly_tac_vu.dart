@@ -12,7 +12,7 @@ class QuanLyTacVu extends StatefulWidget {
 class QuanLyTacVuState extends State<QuanLyTacVu> {
   final TextEditingController txtTenTask = TextEditingController();
   final TextEditingController txtNoiDungTask = TextEditingController();
-  List<TacVu> listTacVu = [], listTacVu1 = [];
+  List<TacVu> listTacVu = [];
 
   @override
   void initState() {

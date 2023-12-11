@@ -6,7 +6,7 @@ part of 'sound.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Sound _$SoundFromJson(Map<String, dynamic> json) => Sound(
+Sound $SoundFromJson(Map<String, dynamic> json) => Sound(
 
       name: json['name'] as String?,
       tacGia: json['tacGia'] as String?,
@@ -14,7 +14,7 @@ Sound _$SoundFromJson(Map<String, dynamic> json) => Sound(
       thoiGian: json['thoiGian'] as String?,
     );
 
-Map<String, dynamic> _$SoundToJson(Sound instance) => <String, dynamic>{
+Map<String, dynamic> $SoundToJson(Sound instance) => <String, dynamic>{
 
       'name': instance.name,
       'tacGia': instance.tacGia,

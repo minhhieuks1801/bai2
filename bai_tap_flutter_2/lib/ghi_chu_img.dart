@@ -207,14 +207,11 @@ class GhiChuState extends State<GhiChuImg> {
     Reference ref = FirebaseStorage.instance.ref().child(tenAnh);
     String url = await ref.getDownloadURL();
     setState(() {
-      listAnh.where((img) => img.name == tenAnh).forEach((img) {
-        Img i = img.copyWith(key: img.key,link: url, name: img.name);
-        int index = listAnh.indexOf(img);
-        listAnh.removeAt(index);
-        listAnh.insert(index, i);
-      });
+      listAnh.setAll(listAnh.indexWhere((img) => img.name == tenAnh),
+        listAnh.where((img) => img.name == tenAnh)
+            .map((img) => img.copyWith(key: img.key, link: url, name: img.name)).toList(),
+      );
     });
-    //listAnh.where((s) => s.name == tenAnh).map((img) => img.copyWith(link: url)).toList();
 
   }
 
