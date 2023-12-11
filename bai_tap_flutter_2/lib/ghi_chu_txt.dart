@@ -6,7 +6,7 @@ import 'model/txt.dart';
 class GhiChuTxt extends StatefulWidget{
   const GhiChuTxt({super.key});
   @override
-  GhiChuTextState createState() => GhiChuTextState();
+  State<StatefulWidget> createState() => GhiChuTextState();
 }
 
 

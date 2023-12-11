@@ -11,7 +11,7 @@ class GhiChuImg extends StatefulWidget {
   const GhiChuImg({Key? key}) : super(key: key);
 
   @override
-  GhiChuState createState() => GhiChuState();
+  State<StatefulWidget> createState() => GhiChuState();
 }
 
 class GhiChuState extends State<GhiChuImg> {

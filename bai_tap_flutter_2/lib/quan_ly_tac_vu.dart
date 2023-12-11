@@ -7,7 +7,7 @@ class QuanLyTacVu extends StatefulWidget {
   const QuanLyTacVu({super.key});
 
   @override
-  QuanLyTacVuState createState() => QuanLyTacVuState();
+  State<StatefulWidget> createState() => QuanLyTacVuState();
 }
 
 class QuanLyTacVuState extends State<QuanLyTacVu> {

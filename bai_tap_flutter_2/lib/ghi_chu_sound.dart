@@ -15,7 +15,7 @@ import 'model/sound.dart';
 class GhiChuSound extends StatefulWidget{
   const GhiChuSound({super.key});
   @override
-  GhiChuSoundState createState() => GhiChuSoundState();
+  State<StatefulWidget> createState() => GhiChuSoundState();
 }
 
 class GhiChuSoundState extends State<GhiChuSound> with TickerProviderStateMixin {

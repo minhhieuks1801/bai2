@@ -10,7 +10,7 @@ class XemThoiTiet extends StatefulWidget{
   const XemThoiTiet({super.key, required this.thoitietApi});
 
   @override
-  XemThoiTietState createState() => XemThoiTietState();
+  State<StatefulWidget> createState() => XemThoiTietState();
 }
 
 
