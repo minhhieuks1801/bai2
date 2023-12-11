@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:untitled1/model/Img.dart';
+import 'package:untitled1/model/img.dart';
 
 class GhiChuImg extends StatefulWidget {
   const GhiChuImg({Key? key}) : super(key: key);

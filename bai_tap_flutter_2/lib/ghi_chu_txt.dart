@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'model/Txt.dart';
+import 'model/txt.dart';
 
 class GhiChuTxt extends StatefulWidget{
   const GhiChuTxt({super.key});

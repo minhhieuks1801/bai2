@@ -1,3 +1,7 @@
+import 'package:json_annotation/json_annotation.dart';
+part 'tac_vu.g.dart';
+
+@JsonSerializable()
 class TacVu {
 
   final String? key;
@@ -16,19 +20,10 @@ class TacVu {
       tinhTrang: tinhTrang,
     );
   }
-  factory TacVu.fromJson(Map<String, dynamic> json) {
-    return TacVu(
-      tieuDe: json['tieuDe'],
-      noiDung: json['noiDung'],
-      tinhTrang: json['tinhTrang'],
-    );
-  }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'tieuDe': tieuDe,
-      'noiDung': noiDung,
-      'tinhTrang': tinhTrang
-    };
-  }
+  factory TacVu.fromJson(Map<String, dynamic> json) => _$TacVuFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TacVuToJson(this);
+
+
 }

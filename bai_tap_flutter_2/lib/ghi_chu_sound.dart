@@ -10,7 +10,7 @@ import 'package:audioplayers/audioplayers.dart' show PlayerState;
 
 
 
-import 'model/Sound.dart';
+import 'model/sound.dart';
 
 class GhiChuSound extends StatefulWidget{
   const GhiChuSound({super.key});

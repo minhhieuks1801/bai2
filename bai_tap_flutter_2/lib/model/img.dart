@@ -1,4 +1,8 @@
 
+import 'package:json_annotation/json_annotation.dart';
+part 'img.g.dart';
+
+@JsonSerializable()
 class Img {
 
    final String? key;
@@ -15,17 +19,8 @@ class Img {
      );
    }
 
-   factory Img.fromJson(Map<String, dynamic> json) {
-     return Img(
-       name: json['name'],
-     );
-   }
+   factory Img.fromJson(Map<String, dynamic> json) => _$ImgFromJson(json);
 
-   Map<String, dynamic> toJson() {
-     return {
-       'name': name,
-     };
-   }
-
+   Map<String, dynamic> toJson() => _$ImgToJson(this);
 
 }

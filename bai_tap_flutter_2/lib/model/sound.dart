@@ -1,5 +1,8 @@
-import 'package:untitled1/model/Img.dart';
 
+import 'package:json_annotation/json_annotation.dart';
+part 'sound.g.dart';
+
+@JsonSerializable()
 class Sound {
 
   final String? key;
@@ -32,21 +35,8 @@ class Sound {
     );
   }
 
-  factory Sound.fromJson(Map<String, dynamic> json) {
-    return Sound(
-      key: json['name'],
-      name: json['image'],
-      link: json['tacGia'],
-      thoiGian: json['thoiGian'],
-    );
-  }
+  factory Sound.fromJson(Map<String, dynamic> json) => _$SoundFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'image': image,
-      'tacGia': tacGia,
-      'thoiGian': thoiGian
-    };
-  }
+  Map<String, dynamic> toJson() => _$SoundToJson(this);
+
 }
