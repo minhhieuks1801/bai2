@@ -4,10 +4,10 @@ enum TxtStatus {init, start, success, error}
 class TxtState extends Equatable {
 
   final List<Txt> txts;
-  final Enum status;
+  final TxtStatus status;
   const TxtState({this.txts = const [], this.status = TxtStatus.init});
 
-  TxtState copyWith({List<Txt>? txts, Enum? status}) {
+  TxtState copyWith({List<Txt>? txts, TxtStatus? status}) {
     return TxtState(
       txts: txts ?? this.txts,
       status: status?? this.status,
