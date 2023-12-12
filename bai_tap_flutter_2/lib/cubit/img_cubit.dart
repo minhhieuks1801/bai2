@@ -23,7 +23,7 @@ class ImgCubit extends Cubit<ImgState> {
         Img i = Img(key: imageName, name: '$imageName.PNG', link: '');
         DatabaseReference postListRef = FirebaseDatabase.instance.ref();
         postListRef.child('Img').push().set(i.toJson());
-        Future.delayed(const Duration(seconds: 1), () {
+        Future.delayed(const Duration(seconds: 2), () {
           listAnh.clear();
           hienThiAnh();
         });
