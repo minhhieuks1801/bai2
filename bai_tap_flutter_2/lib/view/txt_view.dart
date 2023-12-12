@@ -27,7 +27,7 @@ class TxtViewState extends State<GhiTxtView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.grey,
       appBar: AppBar(title: const Text('Ghi văn bản')),
       body: Center(
         child: BlocBuilder<TxtCubit, TxtState>(
@@ -41,6 +41,10 @@ class TxtViewState extends State<GhiTxtView> {
                       txtGhi.text = '';
                     });
                   }),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                    Colors.lime, // Background color
+                  ),
                   child: const Text(
                     'Thêm',
                     style: TextStyle(fontSize: 15, color: Colors.black),
