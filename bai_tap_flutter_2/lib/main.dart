@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1/dem_nguoc.dart';
+import 'package:untitled1/ghi_chu_img_cubit.dart';
 import 'package:untitled1/ghi_chu_sound.dart';
 import 'package:untitled1/quan_ly_tac_vu.dart';
 import 'package:untitled1/ghi_chu_img.dart';
@@ -59,7 +60,7 @@ class TrangChu extends State<Bai2> {
             ElevatedButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const GhiChuImg()));
+                    MaterialPageRoute(builder: (context) => const GhiHinhImgCubit()));
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.greenAccent, // Background color

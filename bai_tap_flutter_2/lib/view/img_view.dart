@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:untitled1/cubit/img_cubit.dart';
 import 'package:untitled1/cubit/img_state.dart';
-import '../model/Img.dart';
+import '../model/img.dart';
 
 class ImgViewList extends StatefulWidget {
   const ImgViewList({super.key});

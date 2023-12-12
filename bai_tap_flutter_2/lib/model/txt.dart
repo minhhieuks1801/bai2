@@ -18,8 +18,8 @@ class Txt {
     );
   }
 
-  factory Txt.fromJson(Map<String, dynamic> json) => $TxtFromJson(json);
+  factory Txt.fromJson(Map<String, dynamic> json) => _$TxtFromJson(json);
 
-  Map<String, dynamic> toJson() => $TxtToJson(this);
+  Map<String, dynamic> toJson() => _$TxtToJson(this);
 
 }

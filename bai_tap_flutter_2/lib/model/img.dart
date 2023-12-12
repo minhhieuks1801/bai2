@@ -1,4 +1,3 @@
-
 import 'package:json_annotation/json_annotation.dart';
 part 'img.g.dart';
 
@@ -19,8 +18,8 @@ class Img {
      );
    }
 
-   factory Img.fromJson(Map<String, dynamic> json) => $ImgFromJson(json);
+   factory Img.fromJson(Map<String, dynamic> json) => _$ImgFromJson(json);
 
-   Map<String, dynamic> toJson() => $ImgToJson(this);
+   Map<String, dynamic> toJson() => _$ImgToJson(this);
 
 }

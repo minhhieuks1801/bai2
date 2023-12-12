@@ -6,10 +6,12 @@ part of 'txt.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Txt $TxtFromJson(Map<String, dynamic> json) => Txt(
+Txt _$TxtFromJson(Map<String, dynamic> json) => Txt(
+      key: json['key'] as String?,
       name: json['name'] as String?,
     );
 
-Map<String, dynamic> $TxtToJson(Txt instance) => <String, dynamic>{
+Map<String, dynamic> _$TxtToJson(Txt instance) => <String, dynamic>{
+      'key': instance.key,
       'name': instance.name,
     };

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:untitled1/cubit/img_state.dart';
-import 'package:untitled1/model/Img.dart';
+import 'package:untitled1/model/img.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
 

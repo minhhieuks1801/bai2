@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:untitled1/model/Img.dart';
+import 'package:untitled1/model/img.dart';
 
 enum ImgStatus {init, start, success, error}
 

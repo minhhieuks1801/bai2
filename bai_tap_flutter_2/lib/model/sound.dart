@@ -35,8 +35,8 @@ class Sound {
     );
   }
 
-  factory Sound.fromJson(Map<String, dynamic> json) => $SoundFromJson(json);
+  factory Sound.fromJson(Map<String, dynamic> json) => _$SoundFromJson(json);
 
-  Map<String, dynamic> toJson() => $SoundToJson(this);
+  Map<String, dynamic> toJson() => _$SoundToJson(this);
 
 }
