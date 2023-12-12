@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:untitled1/activity/ghi_chu_txt_cubit.dart';
 import 'package:untitled1/dem_nguoc.dart';
-import 'package:untitled1/ghi_chu_img_cubit.dart';
+import 'package:untitled1/activity/ghi_chu_img_cubit.dart';
 import 'package:untitled1/ghi_chu_sound.dart';
 import 'package:untitled1/quan_ly_tac_vu.dart';
-import 'package:untitled1/ghi_chu_img.dart';
+//import 'package:untitled1/ghi_chu_img.dart';
 import 'package:untitled1/ghi_chu_txt.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:untitled1/xem_thoi_tiet.dart';
@@ -47,7 +48,7 @@ class TrangChu extends State<Bai2> {
             ElevatedButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const GhiChuTxt()));
+                    MaterialPageRoute(builder: (context) => const GhiChuTxtCubit()));
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.greenAccent, // Background color

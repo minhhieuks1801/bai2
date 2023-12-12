@@ -12,6 +12,5 @@ Txt _$TxtFromJson(Map<String, dynamic> json) => Txt(
     );
 
 Map<String, dynamic> _$TxtToJson(Txt instance) => <String, dynamic>{
-      'key': instance.key,
       'name': instance.name,
     };
