@@ -1,9 +1,9 @@
-import 'package:firebase_database/firebase_database.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:untitled1/cubit/txt_cubit.dart';
-import 'package:untitled1/model/txt.dart';
+//import 'package:untitled1/model/txt.dart';
 
 class GhiTxtView extends StatefulWidget {
   const GhiTxtView({super.key});
