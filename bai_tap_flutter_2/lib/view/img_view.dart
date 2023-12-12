@@ -1,13 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:untitled1/cubit/img_cubit.dart';
 import 'package:untitled1/cubit/img_state.dart';
-import '../model/img.dart';
 
 class ImgViewList extends StatefulWidget {
   const ImgViewList({super.key});
@@ -41,27 +38,6 @@ class ImgViewState extends State<ImgViewList> {
     }
   }
 
-  void luuAnh() async {
-    try {
-      if (imageBytes != null) {
-        String imageName = DateTime.now().toString().split('.')[0];
-        final firebaseStorage =
-            FirebaseStorage.instance.ref().child('$imageName.PNG');
-        firebaseStorage.putData(imageBytes!);
-        Img i = Img(key: imageName, name: '$imageName.PNG', link: '');
-        DatabaseReference postListRef = FirebaseDatabase.instance.ref();
-        postListRef.child('Img').push().set(i.toJson());
-        Future.delayed(const Duration(seconds: 1), () {
-          setState(() {
-            cubit.listAnh.clear();
-            cubit.hienThiAnh();
-            delateSave = false;
-          });
-        });
-      }
-    } catch (error) {}
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,56 +45,60 @@ class ImgViewState extends State<ImgViewList> {
         title: const Text('list image'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              children: [
-                IconButton(
-                  onPressed: layAnh,
-                  iconSize: 60,
-                  color: Colors.red,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white, // Background color
-                  ),
-                  icon: const Icon(Icons.add),
-                ),
-                if (imageBytes != null && !delateSave == false)
+        child: Expanded(
+          child: BlocBuilder<ImgCubit, ImgState>(
+            builder: (context, listAnh) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
                   Row(
                     children: [
-                      Image.memory(
-                        fit: BoxFit.fill,
-                        imageBytes!,
-                        height: 200,
-                        width: 200,
+                      IconButton(
+                        onPressed: layAnh,
+                        iconSize: 60,
+                        color: Colors.red,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white, // Background color
+                        ),
+                        icon: const Icon(Icons.add),
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ElevatedButton(
-                            onPressed: luuAnh,
-                            child: const Text('Lưu'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                delateSave = false;
-                              });
-                            },
-                            child: const Text('Hủy'),
-                          ),
-                        ],
-                      )
+                      if (imageBytes != null && !delateSave == false)
+                        Row(
+                          children: [
+                            Image.memory(
+                              fit: BoxFit.fill,
+                              imageBytes!,
+                              height: 200,
+                              width: 200,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    cubit.luuAnh(imageBytes);
+                                    delateSave = false;
+                                  },
+                                  child: const Text('Lưu'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      delateSave = false;
+                                    });
+                                  },
+                                  child: const Text('Hủy'),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                     ],
                   ),
-              ],
-            ),
-            Expanded(
-              child: BlocBuilder<ImgCubit, ImgState>(
-                builder: (context, listAnh) => Center(
+                  Expanded(
                     child: ListView.builder(
                         padding: const EdgeInsets.all(8),
                         itemCount: listAnh.imgs.length,
@@ -165,8 +145,10 @@ class ImgViewState extends State<ImgViewList> {
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        xemImgDialog(context,
-                                            listAnh.imgs[index].link.toString());
+                                        xemImgDialog(
+                                            context,
+                                            listAnh.imgs[index].link
+                                                .toString());
                                       },
                                       iconSize: 32,
                                       icon: const Icon(Icons.visibility),
@@ -190,10 +172,11 @@ class ImgViewState extends State<ImgViewList> {
                             ),
                           );
                         }),
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

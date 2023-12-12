@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 import 'package:untitled1/cubit/img_state.dart';
@@ -11,16 +13,35 @@ class ImgCubit extends Cubit<ImgState> {
   List<Img> listAnh = [];
   final Logger logger = Logger('');
 
+  void luuAnh(Uint8List? imageBytes) async {
+    try {
+      if (imageBytes != null) {
+        String imageName = DateTime.now().toString().split('.')[0];
+        final firebaseStorage =
+            FirebaseStorage.instance.ref().child('$imageName.PNG');
+        firebaseStorage.putData(imageBytes);
+        Img i = Img(key: imageName, name: '$imageName.PNG', link: '');
+        DatabaseReference postListRef = FirebaseDatabase.instance.ref();
+        postListRef.child('Img').push().set(i.toJson());
+        Future.delayed(const Duration(seconds: 1), () {
+          listAnh.clear();
+          hienThiAnh();
+        });
+      }
+    } catch (e) {
+      logger.warning('Lỗi : $e');
+    }
+  }
+
   void hienThiAnh() {
     try {
-      listAnh.clear();
+
       emit(state.copyWith(status: ImgStatus.start));
       Reference ref = FirebaseStorage.instance.ref();
       Query refAnh = FirebaseDatabase.instance.ref('Img').orderByChild('name');
       refAnh.onValue.listen((event) async {
         Map<dynamic, dynamic> values =
             event.snapshot.value as Map<dynamic, dynamic>;
-
         values.forEach((key, item) async {
           String url =
               await ref.child(item['name'].toString()).getDownloadURL();
@@ -42,6 +63,7 @@ class ImgCubit extends Cubit<ImgState> {
     final desertRef =
         FirebaseStorage.instance.ref().child(listAnh[index].name.toString());
     await desertRef.delete();
+    listAnh.clear();
     hienThiAnh();
   }
 }
