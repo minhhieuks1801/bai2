@@ -37,7 +37,9 @@ class TxtViewState extends State<GhiTxtView> {
                 ElevatedButton(
                   onPressed: () => nhapTextDialog(context, (){
                     cubit.nhapGhiChu(txtGhi.text.toString());
-                    setState(() {});
+                    setState(() {
+                      txtGhi.text = '';
+                    });
                   }),
                   child: const Text(
                     'Thêm',
