@@ -1,14 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:untitled1/model/txt.dart';
 
 part 'txt_state.dart';
 
 class TxtCubit extends Cubit<TxtState> {
-  TxtCubit() : super(TxtState());
+  TxtCubit() : super(const TxtState());
 
   List<Txt> listTxt = [];
   final Logger logger = Logger('');
@@ -18,6 +17,7 @@ class TxtCubit extends Cubit<TxtState> {
     Txt i = Txt(key: imageName, name: a.toString());
     DatabaseReference postListRef = FirebaseDatabase.instance.ref();
     postListRef.child('Txt').push().set(i.toJson());
+    listTxt.add(i);
     emit(state.copyWith(txts: listTxt, status: TxtStatus.success));
   }
 
@@ -25,6 +25,7 @@ class TxtCubit extends Cubit<TxtState> {
     DatabaseReference deleteFB =
         FirebaseDatabase.instance.ref().child('Txt/${listTxt[index].key}');
     deleteFB.remove();
+    listTxt.removeAt(index);
     emit(state.copyWith(txts: listTxt, status: TxtStatus.success));
   }
 
