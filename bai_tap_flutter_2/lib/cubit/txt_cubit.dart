@@ -13,6 +13,7 @@ class TxtCubit extends Cubit<TxtState> {
   final Logger logger = Logger('');
 
   void nhapGhiChu(String a) {
+    emit(state.copyWith(status: TxtStatus.start));
     String imageName = DateTime.now().toString().split('.')[0];
     Txt i = Txt(key: imageName, name: a.toString());
     DatabaseReference postListRef = FirebaseDatabase.instance.ref();
@@ -22,15 +23,17 @@ class TxtCubit extends Cubit<TxtState> {
   }
 
   void xoaGhiChu(int index) {
+    emit(state.copyWith(status: TxtStatus.start));
     DatabaseReference delete =
         FirebaseDatabase.instance.ref().child('Txt/${listTxt[index].key}');
     delete.remove();
     listTxt.removeAt(index);
-    emit(state.copyWith(txts: listTxt, status: TxtStatus.start));
+    emit(state.copyWith(txts: listTxt, status: TxtStatus.success));
   }
 
   void hienThiGhiChu() async {
     try {
+      emit(state.copyWith(status: TxtStatus.start));
       Query refAnh = FirebaseDatabase.instance.ref('Txt').orderByChild('name');
       refAnh.onValue.listen((event) {
         Map<dynamic, dynamic> values =

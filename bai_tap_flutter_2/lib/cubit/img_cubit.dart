@@ -14,6 +14,7 @@ class ImgCubit extends Cubit<ImgState> {
 
   void luuAnh(Uint8List? imageBytes) async {
     try {
+      emit(state.copyWith(status: ImgStatus.start));
       if (imageBytes != null) {
         String imageName = DateTime.now().toString().split('.')[0];
         final firebaseStorage =
@@ -22,8 +23,11 @@ class ImgCubit extends Cubit<ImgState> {
         Img i = Img(key: imageName, name: '$imageName.PNG', link: '');
         DatabaseReference postListRef = FirebaseDatabase.instance.ref();
         postListRef.child('Img').push().set(i.toJson());
-        Future.delayed(const Duration(seconds: 1), () {
-          listAnh.add(i);
+        Reference ref = FirebaseStorage.instance.ref();
+        Future.delayed(const Duration(seconds: 1), () async {
+          String url =
+              await ref.child(i.name.toString()).getDownloadURL();
+          listAnh.add(i.copyWith(key: imageName, name: '$imageName.PNG', link: url));
           emit(state.copyWith(imgs: listAnh, status: ImgStatus.success));
         });
 
@@ -36,9 +40,10 @@ class ImgCubit extends Cubit<ImgState> {
   void hienThiAnh() {
     try {
       emit(state.copyWith(status: ImgStatus.start));
+      listAnh.clear();
       Reference ref = FirebaseStorage.instance.ref();
       Query refAnh = FirebaseDatabase.instance.ref('Img').orderByChild('name');
-      refAnh.onValue.listen((event) async {
+      refAnh.onValue.listen((event) {
         Map<dynamic, dynamic> values =
             event.snapshot.value as Map<dynamic, dynamic>;
         values.forEach((key, item) async {
@@ -57,6 +62,7 @@ class ImgCubit extends Cubit<ImgState> {
   }
 
   void xoaAnh(int index) async {
+    emit(state.copyWith(status: ImgStatus.start));
     DatabaseReference deleteFB =
         FirebaseDatabase.instance.ref().child('Img/${listAnh[index].key}');
     deleteFB.remove();
@@ -64,6 +70,6 @@ class ImgCubit extends Cubit<ImgState> {
         FirebaseStorage.instance.ref().child(listAnh[index].name.toString());
     await desertRef.delete();
     listAnh.removeAt(index);
-    emit(state.copyWith(imgs: listAnh, status: ImgStatus.start));
+    emit(state.copyWith(imgs: listAnh, status: ImgStatus.success));
   }
 }
