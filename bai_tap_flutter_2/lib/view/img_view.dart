@@ -42,10 +42,9 @@ class ImgViewState extends State<ImgViewList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('list image'),
+        title: const Text('Ghi chú hình'),
       ),
       body: Center(
-        child: Expanded(
           child: BlocBuilder<ImgCubit, ImgState>(
             builder: (context, listAnh) => Center(
               child: Column(
@@ -177,7 +176,6 @@ class ImgViewState extends State<ImgViewList> {
               ),
             ),
           ),
-        ),
       ),
     );
   }

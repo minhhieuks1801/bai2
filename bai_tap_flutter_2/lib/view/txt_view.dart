@@ -83,10 +83,11 @@ class TxtViewState extends State<GhiTxtView> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                xoaImgDialog(context, index, () {
-                                  cubit.xoaGhiChu(index);
+                                setState(() {
+                                  xoaImgDialog(context, index, () {
+                                    cubit.xoaGhiChu(index);
+                                  });
                                 });
-                                setState(() {});
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:

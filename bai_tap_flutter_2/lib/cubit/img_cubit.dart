@@ -22,10 +22,11 @@ class ImgCubit extends Cubit<ImgState> {
         Img i = Img(key: imageName, name: '$imageName.PNG', link: '');
         DatabaseReference postListRef = FirebaseDatabase.instance.ref();
         postListRef.child('Img').push().set(i.toJson());
-        Future.delayed(const Duration(seconds: 2), () {
-          listAnh.clear();
-          hienThiAnh();
+        Future.delayed(const Duration(seconds: 1), () {
+          listAnh.add(i);
+          emit(state.copyWith(imgs: listAnh, status: ImgStatus.success));
         });
+
       }
     } catch (e) {
       logger.warning('Lỗi : $e');
@@ -34,7 +35,6 @@ class ImgCubit extends Cubit<ImgState> {
 
   void hienThiAnh() {
     try {
-
       emit(state.copyWith(status: ImgStatus.start));
       Reference ref = FirebaseStorage.instance.ref();
       Query refAnh = FirebaseDatabase.instance.ref('Img').orderByChild('name');
@@ -49,6 +49,7 @@ class ImgCubit extends Cubit<ImgState> {
         Future.delayed(const Duration(seconds: 1), () {
           emit(state.copyWith(imgs: listAnh, status: ImgStatus.success));
         });
+
       });
     } catch (e) {
       logger.warning('Lỗi : $e');
@@ -62,7 +63,7 @@ class ImgCubit extends Cubit<ImgState> {
     final desertRef =
         FirebaseStorage.instance.ref().child(listAnh[index].name.toString());
     await desertRef.delete();
-    listAnh.clear();
-    hienThiAnh();
+    listAnh.removeAt(index);
+    emit(state.copyWith(imgs: listAnh, status: ImgStatus.start));
   }
 }

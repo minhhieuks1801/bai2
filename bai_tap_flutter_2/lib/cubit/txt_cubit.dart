@@ -21,12 +21,12 @@ class TxtCubit extends Cubit<TxtState> {
     emit(state.copyWith(txts: listTxt, status: TxtStatus.success));
   }
 
-  void xoaGhiChu(int index) async {
-    DatabaseReference deleteFB =
+  void xoaGhiChu(int index) {
+    DatabaseReference delete =
         FirebaseDatabase.instance.ref().child('Txt/${listTxt[index].key}');
-    deleteFB.remove();
+    delete.remove();
     listTxt.removeAt(index);
-    emit(state.copyWith(txts: listTxt, status: TxtStatus.success));
+    emit(state.copyWith(txts: listTxt, status: TxtStatus.start));
   }
 
   void hienThiGhiChu() async {
