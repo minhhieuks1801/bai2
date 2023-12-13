@@ -15,5 +15,5 @@ Img _$ImgFromJson(Map<String, dynamic> json) => Img(
 Map<String, dynamic> _$ImgToJson(Img instance) => <String, dynamic>{
       //'key': instance.key,
       'name': instance.name,
-      //'link': instance.link,
+      'link': instance.link,
     };

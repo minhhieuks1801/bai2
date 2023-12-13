@@ -19,18 +19,20 @@ class ImgCubit extends Cubit<ImgState> {
       emit(state.copyWith(status: ImgStatus.start));
       if (imageBytes != null) {
         String imageName = DateTime.now().toString().split('.')[0];
+
         final firebaseStorage =
             FirebaseStorage.instance.ref().child('$imageName.PNG');
         firebaseStorage.putData(imageBytes);
 
-        Img i = Img(key: '', name: '$imageName.PNG', link: '');
+        Reference ref = FirebaseStorage.instance.ref();
+        String url = await ref.child('$imageName.PNG').getDownloadURL();
+        Img i = Img(key: '', name: '$imageName.PNG', link: url);
+        listAnh.add(i);
 
         DatabaseReference postListRef = FirebaseDatabase.instance.ref();
         postListRef.child('Img').push().set(i.toJson());
-        listAnh.add(i);
-        Future.delayed(const Duration(seconds: 1), () {
-          emit(state.copyWith(imgs: listAnh ,status: ImgStatus.success));
-        });
+
+        emit(state.copyWith(imgs: listAnh, status: ImgStatus.success));
       }
     } catch (e) {
       logger.warning('Lỗi : $e');
@@ -40,16 +42,16 @@ class ImgCubit extends Cubit<ImgState> {
   Future<void> hienThiAnh() async {
     try {
       emit(state.copyWith(status: ImgStatus.start));
-      Reference ref = FirebaseStorage.instance.ref();
       Query refAnh = FirebaseDatabase.instance.ref('Img').orderByChild('name');
       refAnh.onValue.listen((event) {
         Map<dynamic, dynamic> values =
             event.snapshot.value as Map<dynamic, dynamic>;
         listAnh.clear();
         values.forEach((key, item) async {
-          String url =
-              await ref.child(item['name'].toString()).getDownloadURL();
-          listAnh.add(Img(key: key, name: item['name'].toString(), link: url));
+          listAnh.add(Img(
+              key: key,
+              name: item['name'].toString(),
+              link: item['link'].toString()));
         });
         Future.delayed(const Duration(seconds: 1), () {
           emit(state.copyWith(imgs: listAnh, status: ImgStatus.success));
