@@ -27,7 +27,7 @@ class TxtCubit extends Cubit<TxtState> {
         FirebaseDatabase.instance.ref().child('Txt/${listTxt[index].key}');
     delete.remove();
     listTxt.removeAt(index);
-    emit(state.copyWith(txts: listTxt, status: TxtStatus.success));
+    emit(state.copyWith(status: TxtStatus.success));
   }
 
   void hienThiGhiChu() async {
