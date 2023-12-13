@@ -79,7 +79,10 @@ class ImgViewState extends State<ImgViewList> {
                                 ElevatedButton(
                                   onPressed: () {
                                     cubit.luuAnh(imageBytes);
-                                    delateSave = false;
+                                    setState(() {
+                                      delateSave = false;
+                                    });
+
                                   },
                                   child: const Text('Lưu'),
                                 ),
