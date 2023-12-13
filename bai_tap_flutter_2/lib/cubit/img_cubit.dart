@@ -18,7 +18,6 @@ class ImgCubit extends Cubit<ImgState> {
     try {
       emit(state.copyWith(status: ImgStatus.start));
       if (imageBytes != null) {
-
         String imageName = DateTime.now().toString().split('.')[0];
         final firebaseStorage =
             FirebaseStorage.instance.ref().child('$imageName.PNG');
@@ -29,6 +28,7 @@ class ImgCubit extends Cubit<ImgState> {
         DatabaseReference postListRef = FirebaseDatabase.instance.ref();
         postListRef.child('Img').push().set(i.toJson());
 
+        listAnh.add(i);
         Future.delayed(const Duration(seconds: 1), () {
           emit(state.copyWith(status: ImgStatus.success));
         });
@@ -38,7 +38,7 @@ class ImgCubit extends Cubit<ImgState> {
     }
   }
 
-  void hienThiAnh() {
+  Future<void> hienThiAnh() async {
     try {
       emit(state.copyWith(status: ImgStatus.start));
       Reference ref = FirebaseStorage.instance.ref();
