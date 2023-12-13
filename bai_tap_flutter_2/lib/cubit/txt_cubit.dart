@@ -14,8 +14,7 @@ class TxtCubit extends Cubit<TxtState> {
 
   void nhapGhiChu(String a) {
     emit(state.copyWith(status: TxtStatus.start));
-    String imageName = DateTime.now().toString().split('.')[0];
-    Txt i = Txt(key: imageName, name: a.toString());
+    Txt i = Txt(key: '', name: a.toString());
     DatabaseReference postListRef = FirebaseDatabase.instance.ref();
     postListRef.child('Txt').push().set(i.toJson());
     listTxt.add(i);
@@ -28,7 +27,7 @@ class TxtCubit extends Cubit<TxtState> {
         FirebaseDatabase.instance.ref().child('Txt/${listTxt[index].key}');
     delete.remove();
     listTxt.removeAt(index);
-    emit(state.copyWith(txts: listTxt, status: TxtStatus.success));
+    emit(state.copyWith(status: TxtStatus.success));
   }
 
   void hienThiGhiChu() async {
