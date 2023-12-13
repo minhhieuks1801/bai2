@@ -1,5 +1,6 @@
 part of 'txt_cubit.dart';
 
+
 enum TxtStatus {init, start, success, error}
 class TxtState extends Equatable {
 
