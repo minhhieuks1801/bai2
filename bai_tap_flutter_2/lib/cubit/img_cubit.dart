@@ -27,10 +27,9 @@ class ImgCubit extends Cubit<ImgState> {
 
         DatabaseReference postListRef = FirebaseDatabase.instance.ref();
         postListRef.child('Img').push().set(i.toJson());
-
         listAnh.add(i);
         Future.delayed(const Duration(seconds: 1), () {
-          emit(state.copyWith(status: ImgStatus.success));
+          emit(state.copyWith(imgs: listAnh ,status: ImgStatus.success));
         });
       }
     } catch (e) {
