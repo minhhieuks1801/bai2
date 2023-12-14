@@ -14,23 +14,28 @@ class ImgCubit extends Cubit<ImgState> {
 
   final Logger logger = Logger('');
 
-  void luuAnh(Uint8List? imageBytes) async {
+  Future<void> luuAnh(Uint8List? imageBytes) async {
     try {
       emit(state.copyWith(status: ImgStatus.start));
       if (imageBytes != null) {
         String imageName = DateTime.now().toString().split('.')[0];
 
-        final firebaseStorage =
-            FirebaseStorage.instance.ref().child('$imageName.PNG');
-        firebaseStorage.putData(imageBytes);
+        Future.delayed(const Duration(seconds: 2), () {
+          final firebaseStorage =
+              FirebaseStorage.instance.ref().child('$imageName.PNG');
+          firebaseStorage.putData(imageBytes);
+        });
 
         Reference ref = FirebaseStorage.instance.ref();
-        String url = await ref.child('$imageName.PNG').getDownloadURL();
-        Img i = Img(key: '', name: '$imageName.PNG', link: url);
-        listAnh.add(i);
+        Future.delayed(const Duration(seconds: 1), () async {
+          String url = await ref.child('$imageName.PNG').getDownloadURL();
 
-        DatabaseReference postListRef = FirebaseDatabase.instance.ref();
-        postListRef.child('Img').push().set(i.toJson());
+          Img i = Img(key: '', name: '$imageName.PNG', link: url);
+          listAnh.add(i);
+
+          DatabaseReference postRef = FirebaseDatabase.instance.ref();
+          postRef.child('Img').push().set(i.toJson());
+        });
 
         emit(state.copyWith(imgs: listAnh, status: ImgStatus.success));
       }
